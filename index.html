@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dubai Road Map</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f4f4f4;
+    }
+    .container {
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .map {
+      display: flex;
+      flex-direction: column;
+      gap: 50px;
+      position: relative;
+    }
+    .road {
+      position: relative;
+    }
+    .road h2 {
+      margin-bottom: 10px;
+    }
+    .locations {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      position: relative;
+      border-top: 3px solid #333;
+      padding-top: 10px;
+    }
+    .location {
+      background-color: #e0e0e0;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .location:hover,
+    .location.active {
+      background-color: #007bff;
+      color: white;
+    }
+    .info-panel {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 350px;
+      height: 100%;
+      background: #fff;
+      box-shadow: -2px 0 8px rgba(0, 0, 0, 0.2);
+      overflow-y: auto;
+      transition: right 0.4s ease;
+      padding: 20px;
+      z-index: 999;
+    }
+    .info-panel.active {
+      right: 0;
+    }
+    .close {
+      font-size: 24px;
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      cursor: pointer;
+    }
+    #info-content {
+      margin-top: 40px;
+    }
+    .dev-info {
+      margin-bottom: 10px;
+      font-size: 14px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Dubai Main Roads Map</h1>
+    <div class="map">
+      <div class="road" id="e11">
+        <h2>E11 – Sheikh Zayed Road</h2>
+        <div class="dev-info">Developed by: Dubai Municipality | Managed by: RTA & Nakheel</div>
+        <div class="locations" id="e11-locations"></div>
+      </div>
+      <div class="road" id="e311">
+        <h2>E311 – Sheikh Mohammed Bin Zayed Road</h2>
+        <div class="dev-info">Developed by: Dubai Municipality | Managed by: Dubai Properties & Union Properties</div>
+        <div class="locations" id="e311-locations"></div>
+      </div>
+      <div class="road" id="e611">
+        <h2>E611 – Emirates Road</h2>
+        <div class="dev-info">Developed by: Dubai Municipality | Managed by: RTA & Meydan</div>
+        <div class="locations" id="e611-locations"></div>
+      </div>
+    </div>
+    <div class="info-panel" id="info-panel">
+      <span class="close" onclick="closePanel()">×</span>
+      <div id="info-content"></div>
+    </div>
+  </div>
+
+  <script>
+    const locationsData = {
+      e11: [
+        { name: "Jebel Ali Free Zone", info: "Major free zone & industrial hub" },
+        { name: "Palm Jebel Ali", info: "Upcoming iconic palm-shaped island" },
+        { name: "Jebel Ali Port", info: "World-class port and logistics hub" },
+        { name: "Ibn Battuta", info: "Mall with themed courts; Nakheel project" },
+        { name: "Jumeirah Lake Towers (JLT)", info: "Mixed-use high-rise community" },
+        { name: "Dubai Marina", info: "Premium waterfront living by Emaar" },
+        { name: "Bluewaters Island", info: "Home of Ain Dubai; luxury beachfront" },
+        { name: "Princess Tower", info: "One of Dubai's tallest residential towers" },
+        { name: "Burj Al Arab", info: "7-star hotel, iconic Dubai symbol" },
+        { name: "Dubai Mall / Downtown Dubai", info: "Emaar's landmark area with Burj Khalifa" },
+        { name: "DIFC", info: "Financial center, offices, and art galleries" },
+        { name: "World Trade Centre", info: "Historic business & events venue" },
+        { name: "Al Satwa", info: "Residential with local markets" },
+        { name: "Al Karama", info: "Old Dubai’s shopping and food hub" },
+        { name: "Al Ghubaiba", info: "Transport hub near the Creek" },
+        { name: "Al Maktoum Bridge", info: "Connects Bur Dubai and Deira" },
+        { name: "Deira City Centre", info: "Popular shopping destination in Deira" },
+        { name: "Al Qusais", info: "Residential area near airport" },
+        { name: "Dubai International Airport", info: "Main international hub – DXB" },
+        { name: "Al Twar", info: "Well-established family area" },
+        { name: "Al Nahda", info: "Residential area at Sharjah border" },
+        { name: "Towards Sharjah", info: "Highway connection to Sharjah" }
+      ],
+      e311: [
+        { name: "Jebel Ali Industrial", info: "Manufacturing & warehouse hub" },
+        { name: "DIP (Dubai Investments Park)", info: "Industrial & residential zones" },
+        { name: "Dubai Production City (IMPZ)", info: "Media & production area" },
+        { name: "Dubai Sports City", info: "Stadiums & sports academies" },
+        { name: "Jumeirah Village Circle (JVC)", info: "Residential community by Nakheel" },
+        { name: "Jumeirah Village Triangle (JVT)", info: "Family villas & parks" },
+        { name: "Motor City", info: "Automobile-themed community" },
+        { name: "Arabian Ranches", info: "Gated villa community by Emaar" },
+        { name: "Dubai Silicon Oasis", info: "Tech park with housing" },
+        { name: "Academic City", info: "University and college campus zone" },
+        { name: "Mirdif", info: "Family homes & Mirdif City Centre" },
+        { name: "Al Warqaa", info: "Residential suburb with large villas" },
+        { name: "Muhaisnah", info: "Mixed-use area near Sharjah border" },
+        { name: "Al Qusais Industrial", info: "Industrial estates and workshops" },
+        { name: "Towards Sharjah", info: "Road leads to Sharjah boundary" }
+      ],
+      e611: [
+        { name: "Jebel Ali", info: "Logistics, industrial & port access" },
+        { name: "Dubai Industrial City", info: "Large manufacturing zone" },
+        { name: "Dubai South", info: "Expo 2020 site & future city" },
+        { name: "Al Maktoum International Airport", info: "New airport – DWC" },
+        { name: "Dubai Logistics City", info: "Freight & cargo corridor" },
+        { name: "Expo City Dubai", info: "Legacy of Expo 2020, mixed-use" },
+        { name: "Dubailand", info: "Entertainment and residential hub" },
+        { name: "The Villa", info: "Upscale Spanish-style villas" },
+        { name: "Falcon City", info: "Replica monuments residential project" },
+        { name: "Al Barari", info: "Luxury eco-friendly living" },
+        { name: "Al Aweer", info: "Fruits & vegetable market area" },
+        { name: "Ras Al Khor", info: "Wildlife sanctuary & industrial" },
+        { name: "International City", info: "Affordable themed residential area" },
+        { name: "Dragon Mart", info: "Largest Chinese market in ME" },
+        { name: "Silicon Oasis", info: "Tech companies & residences" },
+        { name: "Academic City", info: "University zone with multiple campuses" },
+        { name: "Warsan", info: "Emerging residential area" },
+        { name: "Towards Sharjah", info: "Exit towards Sharjah border" }
+      ]
+    };
+
+    function createLocations(roadId, data) {
+      const container = document.getElementById(`${roadId}-locations`);
+      data.forEach(loc => {
+        const div = document.createElement("div");
+        div.className = "location";
+        div.textContent = loc.name;
+        div.onclick = () => showInfo(loc, div);
+        container.appendChild(div);
+      });
+    }
+
+    function showInfo(location, element) {
+      const infoPanel = document.getElementById("info-panel");
+      const infoContent = document.getElementById("info-content");
+
+      document.querySelectorAll(".location").forEach(el => el.classList.remove("active"));
+      element.classList.add("active");
+
+      infoContent.innerHTML = `
+        <h2>${location.name}</h2>
+        <p>${location.info}</p>
+      `;
+      infoPanel.classList.add("active");
+    }
+
+    function closePanel() {
+      document.getElementById("info-panel").classList.remove("active");
+      document.querySelectorAll(".location").forEach(el => el.classList.remove("active"));
+    }
+
+    createLocations("e11", locationsData.e11);
+    createLocations("e311", locationsData.e311);
+    createLocations("e611", locationsData.e611);
+  </script>
+</body>
+</html>

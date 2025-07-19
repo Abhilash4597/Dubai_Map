@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dubai Map</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Dubai Map</h1>
+  <div class="container">
+    <div class="map-container">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Flag_map_of_Dubai.png/800px-Flag_map_of_Dubai.png" 
+     alt="Dubai Map" usemap="#dubaiMap">
+      <map name="dubaiMap">
+        <area shape="rect" coords="100,220,180,260" alt="E11" onclick="showDetails('E11')">
+        <area shape="rect" coords="250,350,330,390" alt="E311" onclick="showDetails('E311')">
+        <area shape="rect" coords="150,600,230,640" alt="E611" onclick="showDetails('E611')">
+      </map>
+    </div>
+    <div class="info-box" id="infoBox">
+      <h2>Click on a road</h2>
+      <p>Details will appear here</p>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
