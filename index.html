@@ -1,211 +1,429 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dubai Road Map</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #f4f4f4;
-    }
-    .container {
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    .map {
-      display: flex;
-      flex-direction: column;
-      gap: 50px;
-      position: relative;
-    }
-    .road {
-      position: relative;
-    }
-    .road h2 {
-      margin-bottom: 10px;
-    }
-    .locations {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      position: relative;
-      border-top: 3px solid #333;
-      padding-top: 10px;
-    }
-    .location {
-      background-color: #e0e0e0;
-      padding: 8px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .location:hover,
-    .location.active {
-      background-color: #007bff;
-      color: white;
-    }
-    .info-panel {
-      position: fixed;
-      top: 0;
-      right: -100%;
-      width: 350px;
-      height: 100%;
-      background: #fff;
-      box-shadow: -2px 0 8px rgba(0, 0, 0, 0.2);
-      overflow-y: auto;
-      transition: right 0.4s ease;
-      padding: 20px;
-      z-index: 999;
-    }
-    .info-panel.active {
-      right: 0;
-    }
-    .close {
-      font-size: 24px;
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      cursor: pointer;
-    }
-    #info-content {
-      margin-top: 40px;
-    }
-    .dev-info {
-      margin-bottom: 10px;
-      font-size: 14px;
-      color: #555;
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Dubai Road Map</title>
+    <style>
+        html, body {
+            height: 100%; /* Make html and body take full height */
+            width: 100%; /* Make html and body take full width */
+            margin: 0;
+            padding: 0; /* Remove default padding */
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); /* Eye-catching gradient */
+            display: flex; /* Use flexbox for centering */
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+        }
+        .container {
+            width: 100%; /* Take full width */
+            /* Removed max-width: 1200px; */
+            height: 100%; /* Take full height of parent */
+            background-color: #ffffff;
+            border-radius: 0; /* Remove rounded corners for full page feel */
+            box-shadow: none; /* Remove shadow for full page feel */
+            padding: 20px; /* Adjust padding for full width */
+            box-sizing: border-box;
+            transition: filter 0.4s ease-in-out; /* Smooth transition for blur */
+            overflow-y: auto; /* Allow container to scroll if its content overflows */
+        }
+        /* Class for blurring the background content */
+        .blurred-content {
+            filter: blur(5px);
+            pointer-events: none; /* Prevent interaction with blurred content */
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 40px; /* More spacing */
+            color: #2c3e50; /* Darker, strong text */
+            font-size: 3rem; /* Slightly larger */
+            font-weight: bold;
+        }
+        .map {
+            display: flex;
+            flex-direction: column;
+            gap: 50px; /* Spacing between roads */
+            position: relative;
+        }
+        .road {
+            position: relative;
+            background-color: #e8f5e9; /* Light green */
+            padding: 25px; /* Slightly more padding */
+            border-radius: 1rem;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Slightly stronger shadow */
+        }
+        .road h2 {
+            margin-bottom: 10px;
+            color: #34495e; /* Darker text */
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        .dev-info {
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: #7f8c8d; /* Medium gray */
+        }
+        .locations {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            position: relative;
+            border-top: 3px solid #a2d9ce; /* Soft teal line */
+            padding-top: 20px; /* More padding */
+            /* Removed scrolling for individual locations list */
+        }
+        .location {
+            background-color: #2ecc71; /* Vibrant green */
+            color: white;
+            padding: 10px 15px; /* Slightly larger buttons */
+            border-radius: 0.75rem; /* More rounded */
+            cursor: pointer;
+            transition: background 0.3s ease-in-out, transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3); /* Stronger shadow */
+            white-space: nowrap; /* Prevent text wrapping */
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .location:hover,
+        .location.active {
+            background-color: #27ae60; /* Darker vibrant green */
+            transform: translateY(-3px); /* More pronounced lift */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Info Panel Styling */
+        .info-panel {
+            position: fixed;
+            top: 0;
+            right: -100%; /* Hidden by default */
+            width: 350px;
+            max-width: 90vw; /* Responsive width */
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7); /* Slightly darker overlay */
+            display: flex;
+            justify-content: flex-end; /* Align panel to the right */
+            z-index: 1000; /* Ensure panel is above blurred content */
+            transition: right 0.4s ease-in-out;
+        }
+        .info-panel.active {
+            right: 0;
+        }
+        .panel-content {
+            background: linear-gradient(135deg, #ffffff, #e0f2f7); /* Subtle light blue gradient */
+            border-radius: 1.5rem 0 0 1.5rem; /* Rounded on left side only */
+            padding: 30px; /* More padding */
+            width: 100%; /* Takes full width of info-panel */
+            box-shadow: -5px 0 20px rgba(0, 0, 0, 0.3); /* Stronger shadow */
+            overflow-y: auto;
+            position: relative;
+            box-sizing: border-box;
+            transform: translateX(100%); /* Initial position for slide-in */
+            transition: transform 0.4s ease-in-out;
+        }
+        .info-panel.active .panel-content {
+            transform: translateX(0); /* Slide in */
+        }
+
+        .close {
+            font-size: 28px;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            cursor: pointer;
+            color: #607d8b; /* Medium grey */
+            transition: color 0.2s;
+            z-index: 1001; /* Ensure close button is above panel content */
+        }
+        .close:hover {
+            color: #4a5568;
+        }
+        #info-content {
+            margin-top: 40px;
+        }
+        #info-content h2 {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #cce7f0; /* Lighter border */
+            padding-bottom: 0.5rem;
+        }
+        #info-content h3 {
+            font-size: 1.2rem;
+            color: #34495e;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        #info-content p {
+            font-size: 1rem;
+            color: #7f8c8d;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive adjustments for info panel */
+        @media (max-width: 768px) {
+            .info-panel {
+                width: 100vw; /* Full width on small screens */
+                justify-content: center; /* Center panel on small screens */
+            }
+            .panel-content {
+                border-radius: 1.5rem 1.5rem 0 0; /* Rounded on top corners */
+                width: 100%;
+                height: 80vh; /* Take up 80% of viewport height */
+                position: absolute;
+                bottom: 0;
+                transform: translateY(100%); /* Slide up from bottom */
+            }
+            .info-panel.active .panel-content {
+                transform: translateY(0);
+            }
+            .close {
+                top: 15px;
+                left: 20px; /* Move close button to left on mobile */
+            }
+            .container {
+                padding: 15px; /* Keep padding for mobile */
+                border-radius: 0; /* No border radius on mobile for full page */
+                box-shadow: none; /* No shadow on mobile for full page */
+            }
+            h1 {
+                font-size: 2.2rem; /* Adjust font size for mobile */
+                margin-bottom: 20px;
+            }
+            .road {
+                padding: 15px;
+            }
+            .road h2 {
+                font-size: 1.6rem;
+            }
+            .locations {
+                gap: 6px; /* Slightly smaller gap on mobile */
+            }
+            .location {
+                font-size: 0.75rem;
+                padding: 5px 8px;
+            }
+            #info-content h2 {
+                font-size: 1.6rem;
+            }
+            #info-content h3 {
+                font-size: 1.1rem;
+            }
+            #info-content p {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Dubai Main Roads Map</h1>
-    <div class="map">
-      <div class="road" id="e11">
-        <h2>E11 – Sheikh Zayed Road</h2>
-        <div class="dev-info">Developed by: Dubai Municipality | Managed by: RTA & Nakheel</div>
-        <div class="locations" id="e11-locations"></div>
-      </div>
-      <div class="road" id="e311">
-        <h2>E311 – Sheikh Mohammed Bin Zayed Road</h2>
-        <div class="dev-info">Developed by: Dubai Municipality | Managed by: Dubai Properties & Union Properties</div>
-        <div class="locations" id="e311-locations"></div>
-      </div>
-      <div class="road" id="e611">
-        <h2>E611 – Emirates Road</h2>
-        <div class="dev-info">Developed by: Dubai Municipality | Managed by: RTA & Meydan</div>
-        <div class="locations" id="e611-locations"></div>
-      </div>
+    <!-- The main content container that will be blurred -->
+    <div class="container" id="main-container">
+        <h1>Dubai Main Roads Map</h1>
+        <div class="map">
+            <div class="road" id="e11-road-section">
+                <h2>E11 – Sheikh Zayed Road</h2>
+                <div class="dev-info">Developed by: Dubai Municipality | Managed by: RTA & Nakheel</div>
+                <div class="locations" id="e11-locations"></div>
+            </div>
+            <div class="road" id="e311-road-section">
+                <h2>E311 – Sheikh Mohammed Bin Zayed Road</h2>
+                <div class="dev-info">Developed by: Dubai Municipality | Managed by: Dubai Properties & Union Properties</div>
+                <div class="locations" id="e311-locations"></div>
+            </div>
+            <div class="road" id="e611-road-section">
+                <h2>E611 – Emirates Road</h2>
+                <div class="dev-info">Developed by: Dubai Municipality | Managed by: RTA & Meydan</div>
+                <div class="locations" id="e611-locations"></div>
+            </div>
+        </div>
     </div>
+
+    <!-- The info panel, now outside the main-container -->
     <div class="info-panel" id="info-panel">
-      <span class="close" onclick="closePanel()">×</span>
-      <div id="info-content"></div>
+        <div class="panel-content">
+            <span class="close" onclick="closePanel()">×</span>
+            <div id="info-content"></div>
+        </div>
     </div>
-  </div>
 
-  <script>
-    const locationsData = {
-      e11: [
-        { name: "Jebel Ali Free Zone", info: "Major free zone & industrial hub" },
-        { name: "Palm Jebel Ali", info: "Upcoming iconic palm-shaped island" },
-        { name: "Jebel Ali Port", info: "World-class port and logistics hub" },
-        { name: "Ibn Battuta", info: "Mall with themed courts; Nakheel project" },
-        { name: "Jumeirah Lake Towers (JLT)", info: "Mixed-use high-rise community" },
-        { name: "Dubai Marina", info: "Premium waterfront living by Emaar" },
-        { name: "Bluewaters Island", info: "Home of Ain Dubai; luxury beachfront" },
-        { name: "Princess Tower", info: "One of Dubai's tallest residential towers" },
-        { name: "Burj Al Arab", info: "7-star hotel, iconic Dubai symbol" },
-        { name: "Dubai Mall / Downtown Dubai", info: "Emaar's landmark area with Burj Khalifa" },
-        { name: "DIFC", info: "Financial center, offices, and art galleries" },
-        { name: "World Trade Centre", info: "Historic business & events venue" },
-        { name: "Al Satwa", info: "Residential with local markets" },
-        { name: "Al Karama", info: "Old Dubai’s shopping and food hub" },
-        { name: "Al Ghubaiba", info: "Transport hub near the Creek" },
-        { name: "Al Maktoum Bridge", info: "Connects Bur Dubai and Deira" },
-        { name: "Deira City Centre", info: "Popular shopping destination in Deira" },
-        { name: "Al Qusais", info: "Residential area near airport" },
-        { name: "Dubai International Airport", info: "Main international hub – DXB" },
-        { name: "Al Twar", info: "Well-established family area" },
-        { name: "Al Nahda", info: "Residential area at Sharjah border" },
-        { name: "Towards Sharjah", info: "Highway connection to Sharjah" }
-      ],
-      e311: [
-        { name: "Jebel Ali Industrial", info: "Manufacturing & warehouse hub" },
-        { name: "DIP (Dubai Investments Park)", info: "Industrial & residential zones" },
-        { name: "Dubai Production City (IMPZ)", info: "Media & production area" },
-        { name: "Dubai Sports City", info: "Stadiums & sports academies" },
-        { name: "Jumeirah Village Circle (JVC)", info: "Residential community by Nakheel" },
-        { name: "Jumeirah Village Triangle (JVT)", info: "Family villas & parks" },
-        { name: "Motor City", info: "Automobile-themed community" },
-        { name: "Arabian Ranches", info: "Gated villa community by Emaar" },
-        { name: "Dubai Silicon Oasis", info: "Tech park with housing" },
-        { name: "Academic City", info: "University and college campus zone" },
-        { name: "Mirdif", info: "Family homes & Mirdif City Centre" },
-        { name: "Al Warqaa", info: "Residential suburb with large villas" },
-        { name: "Muhaisnah", info: "Mixed-use area near Sharjah border" },
-        { name: "Al Qusais Industrial", info: "Industrial estates and workshops" },
-        { name: "Towards Sharjah", info: "Road leads to Sharjah boundary" }
-      ],
-      e611: [
-        { name: "Jebel Ali", info: "Logistics, industrial & port access" },
-        { name: "Dubai Industrial City", info: "Large manufacturing zone" },
-        { name: "Dubai South", info: "Expo 2020 site & future city" },
-        { name: "Al Maktoum International Airport", info: "New airport – DWC" },
-        { name: "Dubai Logistics City", info: "Freight & cargo corridor" },
-        { name: "Expo City Dubai", info: "Legacy of Expo 2020, mixed-use" },
-        { name: "Dubailand", info: "Entertainment and residential hub" },
-        { name: "The Villa", info: "Upscale Spanish-style villas" },
-        { name: "Falcon City", info: "Replica monuments residential project" },
-        { name: "Al Barari", info: "Luxury eco-friendly living" },
-        { name: "Al Aweer", info: "Fruits & vegetable market area" },
-        { name: "Ras Al Khor", info: "Wildlife sanctuary & industrial" },
-        { name: "International City", info: "Affordable themed residential area" },
-        { name: "Dragon Mart", info: "Largest Chinese market in ME" },
-        { name: "Silicon Oasis", info: "Tech companies & residences" },
-        { name: "Academic City", info: "University zone with multiple campuses" },
-        { name: "Warsan", info: "Emerging residential area" },
-        { name: "Towards Sharjah", info: "Exit towards Sharjah border" }
-      ]
-    };
+    <script>
+        const locationsData = {
+            e11: [
+                { id: "jebel-ali-free-zone", name: "Jebel Ali Free Zone (JAFZA)", developer: "DP World", manager: "DP World (Jafza)", famousFor: "One of the world's largest free zones, a global industrial and logistics hub." },
+                { id: "palm-jebel-ali", name: "Palm Jebel Ali", developer: "Nakheel Properties", manager: "Nakheel Properties", famousFor: "An upcoming iconic palm-shaped island development, currently undergoing redevelopment." },
+                { id: "jebel-ali-port", name: "Jebel Ali Port", developer: "DP World", manager: "DP World", famousFor: "The largest man-made harbor in the world and the busiest port in the Middle East." },
+                { id: "ibn-battuta", name: "Ibn Battuta Mall", developer: "Nakheel Properties", manager: "Nakheel Properties", famousFor: "A themed shopping mall inspired by the travels of explorer Ibn Battuta, known for its unique architecture." },
+                { id: "jumeirah-lake-towers-jlt", name: "Jumeirah Lake Towers (JLT)", developer: "DMCC (Dubai Multi Commodities Centre)", manager: "DMCC and various property management companies.", famousFor: "A vibrant mixed-use high-rise community built around artificial lakes, popular for residential and commercial spaces." },
+                { id: "dubai-marina", name: "Dubai Marina", developer: "Emaar Properties", manager: "Emaar Properties and various community management associations.", famousFor: "A premium waterfront living destination with skyscrapers, luxury yachts, and a bustling promenade." },
+                { id: "bluewaters-island", name: "Bluewaters Island", developer: "Meraas (now Dubai Holding)", manager: "Dubai Holding", famousFor: "Home to Ain Dubai (the world's largest observation wheel) and luxury beachfront residences, dining, and entertainment." },
+                { id: "jbr", name: "Jumeirah Beach Residence (JBR)", developer: "Dubai Properties", manager: "Dubai Properties and various community management associations.", famousFor: "A popular beachfront residential and leisure destination with a vibrant walk, restaurants, and retail." },
+                { id: "princess-tower", name: "Princess Tower", developer: "Tameer Holding Investment", manager: "Various property management companies.", famousFor: "Once the world's tallest residential building, offering panoramic views of Dubai Marina and Palm Jumeirah." },
+                { id: "dubai-harbour", name: "Dubai Harbour", developer: "Meraas (now Dubai Holding)", manager: "Dubai Holding", famousFor: "A new waterfront destination featuring a state-of-the-art cruise terminal, luxury residences, and a large marina." },
+                { id: "emaar-beachfront", name: "Emaar Beachfront", developer: "Emaar Properties", manager: "Emaar Properties", famousFor: "An exclusive residential community offering luxury apartments with direct beach access and stunning views of the Arabian Gulf." },
+                { id: "dubai-media-city", name: "Dubai Media City", developer: "TECOM Group (part of Dubai Holding)", manager: "TECOM Group", famousFor: "A free zone dedicated to media and advertising companies, a hub for regional and international media organizations." },
+                { id: "dubai-internet-city", name: "Dubai Internet City", developer: "TECOM Group (part of Dubai Holding)", manager: "TECOM Group", famousFor: "The Middle East's largest information and communications technology (ICT) free zone, home to global tech giants." },
+                { id: "dubai-knowledge-park", name: "Dubai Knowledge Park", developer: "TECOM Group (part of Dubai Holding)", manager: "TECOM Group", famousFor: "A free zone dedicated to human resource management, learning, and educational institutions." },
+                { id: "palm-jumeirah", name: "Palm Jumeirah", developer: "Nakheel Properties", manager: "Nakheel Properties and various community management associations.", famousFor: "An iconic man-made archipelago, famous for its luxury villas, hotels (like Atlantis), and high-end lifestyle." },
+                { id: "flamingos-villas", name: "Flamingos Villas", developer: "R Holdings", manager: "R Holdings and community management.", famousFor: "A residential villa community within Jumeirah Village Circle/Triangle area." },
+                { id: "al-nakheel-villas", name: "Al Nakheel Villas", developer: "Nakheel Properties", manager: "Nakheel Properties and community management.", famousFor: "A residential community with villas, often associated with Nakheel developments." },
+                { id: "al-safouh", name: "Al Safouh", developer: "Various developers", manager: "Dubai Municipality / Individual property owners", famousFor: "A coastal area with residential and commercial properties, close to major attractions and the beach." },
+                { id: "mall-of-emirates", name: "Mall of the Emirates", developer: "Majid Al Futtaim Properties", manager: "Majid Al Futtaim Properties", famousFor: "A world-renowned shopping mall, famous for Ski Dubai (indoor ski resort) and luxury brands." },
+                { id: "umm-al-sheif", name: "Umm Al Sheif", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A quiet residential area known for its large villas and proximity to Jumeirah and Al Barsha." },
+                { id: "umm-suqeim-3", name: "Umm Suqeim 3", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A residential area known for its beach access, proximity to Burj Al Arab, and family-friendly environment." },
+                { id: "burj-al-arab", name: "Burj Al Arab", developer: "Jumeirah Group", manager: "Jumeirah Group", famousFor: "An iconic sail-shaped luxury hotel, often referred to as a '7-star' hotel, a symbol of Dubai." },
+                { id: "umm-suqeim-2", name: "Umm Suqeim 2", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "Another residential area within Umm Suqeim, known for its villas and proximity to Kite Beach." },
+                { id: "al-safa-2", name: "Al Safa 2", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A residential community with villas, offering good connectivity and proximity to Safa Park." },
+                { id: "umm-suqeim-1", name: "Umm Suqeim 1", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "The oldest part of Umm Suqeim, known for its traditional villas and direct beach access." },
+                { id: "al-safa", name: "Al Safa", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A well-established residential area with villas and apartments, known for Safa Park and its central location." },
+                { id: "jumeirah-3", name: "Jumeirah 3", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A prime residential area with villas, offering beach access and a relaxed lifestyle." },
+                { id: "safa-park", name: "Safa Park", developer: "Dubai Municipal Corporation", manager: "Dubai Municipal Corporation", famousFor: "A large urban park, popular for recreation, picnics, and its green spaces." },
+                { id: "sunset-mall", name: "Sunset Mall", developer: "Wasl Properties", manager: "Wasl Properties", famousFor: "A community mall in Jumeirah, offering retail, dining, and entertainment options." },
+                { id: "the-world-island", name: "The World Island", developer: "Nakheel", manager: "Kleindienst Group (for The Heart of Europe)", famousFor: "An artificial archipelago of small islands constructed in the shape of a world map, with some islands developed into luxury resorts." },
+                { id: "the-private-island-sweden", name: "The Private Island (Sweden Island)", developer: "The Kleindienst Group", manager: "The Kleindienst Group", famousFor: "Part of The Heart of Europe development on The World Islands, offering luxury villas with unique designs." },
+                { id: "dubai-canal", name: "Dubai Canal", developer: "RTA (Roads and Transport Authority)", manager: "RTA", famousFor: "An artificial waterway extending from Business Bay to the Arabian Gulf, transforming parts of Dubai into a waterfront city." },
+                { id: "al-wasl", name: "Al Wasl", developer: "Wasl Properties", manager: "Wasl Properties", famousFor: "A residential area known for its villas, schools, and proximity to Jumeirah and Sheikh Zayed Road." },
+                { id: "jumeirah-2", name: "Jumeirah 2", developer: "Wasl Properties", manager: "Wasl Properties", famousFor: "A residential area with villas, offering beach access and a mix of traditional and modern properties." },
+                { id: "jumeirah-bay-islands", name: "Jumeirah Bay Islands", developer: "Meraas (now Dubai Holding)", manager: "Dubai Holding", famousFor: "A luxury island destination featuring Bulgari Resort & Residences and high-end properties." },
+                { id: "bulgan-island", name: "Bulgari Island", developer: "Meraas (now Dubai Holding)", manager: "Dubai Holding", famousFor: "Home to the ultra-luxury Bulgari Resort & Residences, part of Jumeirah Bay Islands." },
+                { id: "al-satwa", name: "Al Satwa", developer: "Wasl Properties (some parts by Dubai Municipality)", manager: "Wasl Properties / Dubai Municipality", famousFor: "A vibrant, multicultural residential and commercial area known for its diverse shops, tailors, and restaurants." },
+                { id: "al-badaa", name: "Al Bada'a", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A residential area located between Jumeirah and Al Satwa, offering a mix of villas and apartments." },
+                { id: "jumeirah-1", name: "Jumeirah 1", developer: "Wasl Properties", manager: "Wasl Properties", famousFor: "The original Jumeirah district, known for its traditional villas, beach access, and proximity to La Mer." },
+                { id: "la-mer", name: "La Mer", developer: "Meraas (now Dubai Holding)", manager: "Dubai Holding", famousFor: "A popular beachfront destination with trendy restaurants, cafes, retail, and recreational facilities." },
+                { id: "al-jaffiliya", name: "Al Jaffiliya", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A residential and administrative area, home to the General Directorate of Residency and Foreigners Affairs (GDRFA)." },
+                { id: "al-hudaiba", name: "Al Hudaiba", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A residential area located near Port Rashid and the coast, offering a mix of villas and apartments." },
+                { id: "al-mina", name: "Al Mina", developer: "DP World", manager: "DP World (Ports, Customs & Free Zone Corporation)", famousFor: "A significant port area in Dubai, crucial for maritime trade and logistics, part of the larger port operations." },
+                { id: "dubai-dry-docks", name: "Dubai Dry Docks", developer: "DP World", manager: "DP World", famousFor: "One of the largest ship repair yards in the Middle East, offering comprehensive maritime services." },
+                { id: "zabeel-park", name: "Zabeel Park", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A large public park in Dubai, known for its green spaces, jogging tracks, and the iconic Dubai Frame." },
+                { id: "umm-hurair-2", name: "Umm Hurair 2", developer: "Tatweer / Dubai Holding", manager: "Tatweer / Dubai Holding", famousFor: "A mixed-use area, home to Dubai Healthcare City and various residential and commercial developments." },
+                { id: "mohammed-bin-rashid-university", name: "Mohammed Bin Rashid University of Medicine and Health Sciences (MBRU)", developer: "DHCA (Dubai Healthcare City Authority)", manager: "DHCA", famousFor: "A leading academic institution focusing on health sciences education and research." },
+                { id: "sofitel-dubai", name: "Sofitel Dubai Downtown", developer: "Wafi Group (MKM Holding)", manager: "Wafi Group (MKM Holding)", famousFor: "A luxury hotel offering direct access to The Dubai Mall and stunning views of Burj Khalifa." },
+                { id: "wafi-mall", name: "Wafi Mall", developer: "Wafi Group (MKM Holding)", manager: "Wafi Group (MKM Holding)", famousFor: "A distinctive shopping mall with an Egyptian theme, known for its unique architecture and luxury boutiques." },
+                { id: "oud-metha", name: "Oud Metha", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A well-established residential and commercial area known for its schools, hospitals, and a mix of apartments and villas." },
+                { id: "al-karama", name: "Al Karama", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A bustling residential and commercial district popular for its affordable housing, diverse dining options, and numerous shops." },
+                { id: "al-mankhool", name: "Al Mankhool", developer: "Dubai Municipality", manager: "Dubai Municipality / Individual property owners", famousFor: "A residential area in Bur Dubai, known for its apartments, hotels, and proximity to shopping malls and historical sites." },
+                { id: "bur-juman", name: "BurJuman", developer: "Al Ghurair Group", manager: "Al Ghurair Group", famousFor: "One of Dubai's oldest shopping malls, known for its luxury brands and family-friendly atmosphere." },
+                { id: "al-raffa", name: "Al Raffa", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A residential and commercial area in Bur Dubai, known for its mix of apartments, shops, and restaurants." },
+                { id: "extension-of-al-mina", name: "Extension of Al Mina", developer: "DP World", manager: "DP World", famousFor: "An expansion of the Al Mina port area, enhancing its capabilities for cargo and logistics." },
+                { id: "dubai-customs", name: "Dubai Customs", developer: "Government of Dubai", manager: "Government of Dubai", famousFor: "The government authority responsible for customs operations, trade facilitation, and border security." },
+                { id: "port-rashid-passenger-terminal", name: "Port Rashid Passenger Terminal", developer: "DP World", manager: "DP World", famousFor: "A major cruise terminal serving international cruise lines and passengers visiting Dubai." },
+                { id: "port-rashid", name: "Port Rashid", developer: "Dubai Government (1970), later Nakheel with EMAAR & DP World", manager: "DP World", famousFor: "A historic commercial port now being redeveloped into a cruise tourism destination and waterfront community." },
+                { id: "dubai-maritime-city", name: "Dubai Maritime City", developer: "Dubai Maritime City LLC (a subsidiary of DP World)", manager: "Dubai Maritime City LLC", famousFor: "A purpose-built maritime hub designed to support the maritime industry, offering commercial and industrial facilities." },
+                { id: "deira", name: "Deira", developer: "Dubai Municipality", manager: "Dubai Municipality (some areas by Wasl Group)", famousFor: "The historic heart of Dubai, known for its traditional souks (gold, spice, perfume), Dhow Wharfage, and vibrant trading." },
+                { id: "dubai-islands", name: "Dubai Islands", developer: "Nakheel", manager: "Nakheel", famousFor: "A new waterfront masterplan by Nakheel, transforming the former Deira Islands into a prime residential and tourism destination." },
+                { id: "al-qusais", name: "Al Qusais", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A large residential and industrial area, known for its affordable housing and proximity to Dubai International Airport." },
+                { id: "dubai-international-airport", name: "Dubai International Airport (DXB)", developer: "Dubai Airports", manager: "Dubai Airports", famousFor: "One of the world's busiest airports by international passenger traffic, a major global aviation hub." },
+                { id: "al-twar", name: "Al Twar", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A well-established residential area with villas, known for its quiet environment and family-friendly amenities." },
+                { id: "al-nahda", name: "Al Nahda", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A residential area bordering Sharjah, offering affordable housing options and good connectivity." },
+                { id: "towards-sharjah-e11", name: "Towards Sharjah", developer: "RTA", manager: "RTA", famousFor: "The continuation of E11 leading towards the emirate of Sharjah." }
+            ],
+            e311: [
+                { id: "jebel-ali-industrial-e311", name: "Jebel Ali Industrial", developer: "Various developers", manager: "Various entities", famousFor: "Manufacturing & warehouse hub along E311." },
+                { id: "dip", name: "DIP (Dubai Investments Park)", developer: "Dubai Investments", manager: "Dubai Investments", famousFor: "A mixed-use development with industrial, commercial, and residential zones." },
+                { id: "dubai-production-city", name: "Dubai Production City (IMPZ)", developer: "TECOM Group", manager: "TECOM Group", famousFor: "A free zone dedicated to media production and printing industries." },
+                { id: "dubai-sports-city", name: "Dubai Sports City", developer: "Dubai Properties", manager: "Dubai Properties and community management.", famousFor: "A multi-venue sports complex with residential and commercial properties." },
+                { id: "jumeirah-village-circle-jvc", name: "Jumeirah Village Circle (JVC)", developer: "Nakheel Properties", manager: "Various property management companies and community associations.", famousFor: "A family-friendly master community known for its affordable villas, townhouses, and apartments." },
+                { id: "jumeirah-village-triangle-jvt", name: "Jumeirah Village Triangle (JVT)", developer: "Nakheel Properties", manager: "Various property management companies.", famousFor: "A residential community similar to JVC, offering villas and townhouses, known for its quiet environment." },
+                { id: "motor-city", name: "Motor City", developer: "Union Properties", manager: "Union Properties and community management.", famousFor: "A motorsport-themed development offering residential properties, business parks, and retail outlets." },
+                { id: "arabian-ranches", name: "Arabian Ranches", developer: "Emaar Properties", manager: "Emaar Properties and community management.", famousFor: "A prestigious desert-themed gated villa community, known for its golf course and equestrian facilities." },
+                { id: "dubai-silicon-oasis-e311", name: "Dubai Silicon Oasis", developer: "Dubai Silicon Oasis Authority (DSOA)", manager: "DSOA", famousFor: "A free zone technology park with residential and commercial properties, fostering innovation and technology." },
+                { id: "academic-city-e311", name: "Academic City", developer: "TECOM Group", manager: "TECOM Group", famousFor: "A large educational hub hosting numerous universities and colleges." },
+                { id: "mirdif", name: "Mirdif", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A popular residential area known for its family-friendly environment, villas, and Mirdif City Centre." },
+                { id: "al-warqaa", name: "Al Warqaa", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A residential suburb with large villas and a focus on community living." },
+                { id: "muhaisnah", name: "Muhaisnah", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A mixed-use area near the Sharjah border, with residential and labor accommodation." },
+                { id: "al-qusais-industrial-e311", name: "Al Qusais Industrial", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "Industrial estates and workshops area." },
+                { id: "towards-sharjah-e311", name: "Towards Sharjah", developer: "RTA", manager: "RTA", famousFor: "The continuation of E311 leading towards the emirate of Sharjah." }
+            ],
+            e611: [
+                { id: "jebel-ali-e611", name: "Jebel Ali", developer: "DP World", manager: "DP World", famousFor: "Logistics, industrial & port access point from E611." },
+                { id: "dubai-industrial-city", name: "Dubai Industrial City", developer: "Dubai Holding", manager: "Dubai Holding", famousFor: "A large manufacturing and logistics hub, home to various industrial sectors." },
+                { id: "dubai-south", name: "Dubai South", developer: "Dubai Aviation City Corporation", manager: "Dubai Aviation City Corporation", famousFor: "A master-planned city encompassing Al Maktoum International Airport and the Expo 2020 site." },
+                { id: "al-maktoum-international-airport", name: "Al Maktoum International Airport (DWC)", developer: "Dubai Aviation City Corporation", manager: "Dubai Aviation City Corporation", famousFor: "Dubai's second international airport, a key component of Dubai South's logistics and aviation hub." },
+                { id: "dubai-logistics-city", name: "Dubai Logistics City", developer: "Dubai Aviation City Corporation", manager: "Dubai Aviation City Corporation", famousFor: "A free zone dedicated to logistics, freight, and supply chain management within Dubai South." },
+                { id: "expo-city-dubai", name: "Expo City Dubai", developer: "Dubai Government", manager: "Expo City Dubai Authority", famousFor: "The legacy site of Expo 2020 Dubai, now a futuristic, sustainable city with business, residential, and attractions." },
+                { id: "dubailand", name: "Dubailand", developer: "Dubai Properties", manager: "Dubai Properties and various developers.", famousFor: "A massive entertainment and residential development, home to various theme parks and communities." },
+                { id: "the-villa", name: "The Villa", developer: "Dubai Properties", manager: "Dubai Properties and community management.", famousFor: "An upscale Spanish-style villa community within Dubailand." },
+                { id: "falcon-city", name: "Falcon City of Wonders", developer: "Falconcity of Wonders LLC", manager: "Falconcity of Wonders LLC", famousFor: "A unique residential project featuring replicas of world-famous monuments." },
+                { id: "al-barari", name: "Al Barari", developer: "Sustainable City Development", manager: "Sustainable City Development", famousFor: "A luxurious eco-friendly residential community known for its lush green spaces and tranquil environment." },
+                { id: "al-aweer", name: "Al Aweer", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "Known for its central fruit and vegetable market, and a mix of residential and agricultural areas." },
+                { id: "ras-al-khor", name: "Ras Al Khor", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "Home to the Ras Al Khor Wildlife Sanctuary (flamingos) and an industrial area." },
+                { id: "international-city", name: "International City", developer: "Nakheel Properties", manager: "Nakheel Properties", famousFor: "An affordable residential development with country-themed clusters and Dragon Mart." },
+                { id: "dragon-mart", name: "Dragon Mart", developer: "Nakheel Properties", manager: "Nakheel Properties", famousFor: "The largest trading hub for Chinese products outside mainland China." },
+                { id: "silicon-oasis-e611", name: "Silicon Oasis", developer: "Dubai Silicon Oasis Authority (DSOA)", manager: "DSOA", famousFor: "A free zone technology park with residential and commercial properties, fostering innovation and technology." },
+                { id: "academic-city-e611", name: "Academic City", developer: "TECOM Group", manager: "TECOM Group", famousFor: "A large educational hub hosting numerous universities and colleges." },
+                { id: "warsan", name: "Warsan", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "An emerging residential area, home to the Warsan wastewater treatment plant and various developments." },
+                { id: "towards-sharjah-e611", name: "Towards Sharjah", developer: "RTA", manager: "RTA", famousFor: "The continuation of E611 leading towards the emirate of Sharjah." }
+            ]
+        };
 
-    function createLocations(roadId, data) {
-      const container = document.getElementById(`${roadId}-locations`);
-      data.forEach(loc => {
-        const div = document.createElement("div");
-        div.className = "location";
-        div.textContent = loc.name;
-        div.onclick = () => showInfo(loc, div);
-        container.appendChild(div);
-      });
-    }
+        function createLocations(roadId, data) {
+            const container = document.getElementById(`${roadId}-locations`);
+            container.innerHTML = ''; // Clear existing locations before re-creating
+            data.forEach((loc, index) => {
+                const div = document.createElement("div");
+                div.className = "location";
+                // Add numbering to the location name
+                div.textContent = `${index + 1}. ${loc.name}`;
+                div.onclick = () => showInfo(loc, div);
+                container.appendChild(div);
+            });
+        }
 
-    function showInfo(location, element) {
-      const infoPanel = document.getElementById("info-panel");
-      const infoContent = document.getElementById("info-content");
+        function showInfo(location, element) {
+            const infoPanel = document.getElementById("info-panel");
+            const infoContent = document.getElementById("info-content");
+            const mainContainer = document.getElementById("main-container");
 
-      document.querySelectorAll(".location").forEach(el => el.classList.remove("active"));
-      element.classList.add("active");
+            // Remove active class from all locations
+            document.querySelectorAll(".location").forEach(el => el.classList.remove("active"));
+            // Add active class to the clicked location
+            element.classList.add("active");
 
-      infoContent.innerHTML = `
-        <h2>${location.name}</h2>
-        <p>${location.info}</p>
-      `;
-      infoPanel.classList.add("active");
-    }
+            infoContent.innerHTML = `
+                <h2>${location.name}</h2>
+                <h3>Developer:</h3>
+                <p>${location.developer}</p>
+                <h3>Manager:</h3>
+                <p>${location.manager}</p>
+                <h3>Why It's Famous:</h3>
+                <p>${location.famousFor}</p>
+            `;
+            infoPanel.classList.add("active");
+            mainContainer.classList.add("blurred-content"); // Apply blur
+        }
 
-    function closePanel() {
-      document.getElementById("info-panel").classList.remove("active");
-      document.querySelectorAll(".location").forEach(el => el.classList.remove("active"));
-    }
+        function closePanel() {
+            const infoPanel = document.getElementById("info-panel");
+            const mainContainer = document.getElementById("main-container");
 
-    createLocations("e11", locationsData.e11);
-    createLocations("e311", locationsData.e311);
-    createLocations("e611", locationsData.e611);
-  </script>
+            infoPanel.classList.remove("active");
+            mainContainer.classList.remove("blurred-content"); // Remove blur
+            document.querySelectorAll(".location").forEach(el => el.classList.remove("active"));
+        }
+
+        // Event listener to close panel when clicking outside of panel-content
+        document.addEventListener('click', (event) => {
+            const infoPanel = document.getElementById("info-panel");
+            const panelContent = infoPanel.querySelector('.panel-content');
+            const clickedElement = event.target;
+
+            // Check if the panel is active and the click was outside the panel content
+            // and not on the close button itself, or any location button.
+            if (infoPanel.classList.contains('active') &&
+                !panelContent.contains(clickedElement) &&
+                !clickedElement.classList.contains('close') &&
+                !clickedElement.classList.contains('location')) {
+                closePanel();
+            }
+        });
+
+
+        // Initialize locations for each road
+        createLocations("e11", locationsData.e11);
+        createLocations("e311", locationsData.e311);
+        createLocations("e611", locationsData.e611);
+    </script>
 </body>
 </html>
