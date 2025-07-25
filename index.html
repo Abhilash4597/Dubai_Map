@@ -19,7 +19,6 @@
         }
         .container {
             width: 100%; /* Take full width */
-            /* Removed max-width: 1200px; */
             height: 100%; /* Take full height of parent */
             background-color: #ffffff;
             border-radius: 0; /* Remove rounded corners for full page feel */
@@ -54,6 +53,12 @@
             padding: 25px; /* Slightly more padding */
             border-radius: 1rem;
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Slightly stronger shadow */
+            cursor: pointer; /* Indicate clickable area */
+            transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .road:hover {
+            background-color: #d4edda; /* Lighter green on hover */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
         }
         .road h2 {
             margin-bottom: 10px;
@@ -67,13 +72,15 @@
             color: #7f8c8d; /* Medium gray */
         }
         .locations {
-            display: flex;
+            display: none; /* Hidden by default */
             flex-wrap: wrap;
             gap: 10px;
             position: relative;
             border-top: 3px solid #a2d9ce; /* Soft teal line */
             padding-top: 20px; /* More padding */
-            /* Removed scrolling for individual locations list */
+        }
+        .locations.is-visible {
+            display: flex; /* Show when active */
         }
         .location {
             background-color: #2ecc71; /* Vibrant green */
@@ -360,13 +367,18 @@
 
         function createLocations(roadId, data) {
             const container = document.getElementById(`${roadId}-locations`);
-            container.innerHTML = ''; // Clear existing locations before re-creating
+            // Clear existing locations before re-creating to prevent duplicates on re-open
+            container.innerHTML = '';
             data.forEach((loc, index) => {
                 const div = document.createElement("div");
                 div.className = "location";
                 // Add numbering to the location name
                 div.textContent = `${index + 1}. ${loc.name}`;
-                div.onclick = () => showInfo(loc, div);
+                // Attach click listener to show info panel for individual location
+                div.onclick = (event) => {
+                    event.stopPropagation(); // Prevent road section from toggling when clicking a location
+                    showInfo(loc, div);
+                };
                 container.appendChild(div);
             });
         }
@@ -411,19 +423,50 @@
 
             // Check if the panel is active and the click was outside the panel content
             // and not on the close button itself, or any location button.
+            // Also, ensure it's not a click on the road section itself, as that has its own toggle.
             if (infoPanel.classList.contains('active') &&
                 !panelContent.contains(clickedElement) &&
                 !clickedElement.classList.contains('close') &&
-                !clickedElement.classList.contains('location')) {
+                !clickedElement.closest('.road')) { // Check if the clicked element or its parent is a .road
                 closePanel();
             }
         });
 
+        // Add event listeners to road sections to toggle locations visibility
+        document.querySelectorAll('.road').forEach(roadElement => {
+            roadElement.addEventListener('click', (event) => {
+                // Check if the click originated from a .location button within this road,
+                // if so, let the .location's click handler manage it.
+                if (event.target.classList.contains('location')) {
+                    return;
+                }
 
-        // Initialize locations for each road
-        createLocations("e11", locationsData.e11);
-        createLocations("e311", locationsData.e311);
-        createLocations("e611", locationsData.e611);
+                const roadId = roadElement.id; // e.g., "e11-road-section"
+                const roadKey = roadId.replace('-road-section', ''); // e.g., "e11"
+                const locationsContainer = document.getElementById(`${roadKey}-locations`);
+
+                // Close any other open locations first
+                document.querySelectorAll('.locations.is-visible').forEach(openLocations => {
+                    if (openLocations.id !== locationsContainer.id) {
+                        openLocations.classList.remove('is-visible');
+                        openLocations.innerHTML = ''; // Clear content when hiding
+                    }
+                });
+
+                // Toggle visibility of the clicked road's locations
+                if (locationsContainer.classList.contains('is-visible')) {
+                    locationsContainer.classList.remove('is-visible');
+                    locationsContainer.innerHTML = ''; // Clear content when hiding
+                } else {
+                    createLocations(roadKey, locationsData[roadKey]); // Populate and show
+                    locationsContainer.classList.add('is-visible');
+                }
+            });
+        });
+
+        // Initial setup: No locations are visible by default.
+        // The createLocations function will be called when a road is clicked.
     </script>
 </body>
 </html>
+
