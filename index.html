@@ -5,394 +5,631 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Dubai Road Map</title>
     <style>
+        /* Import Google Font 'Inter' */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+
         html, body {
-            height: 100%; /* Make html and body take full height */
-            width: 100%; /* Make html and body take full width */
+            height: 100%;
+            width: 100%;
             margin: 0;
-            padding: 0; /* Remove default padding */
+            padding: 0;
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); /* Eye-catching gradient */
+            /* Updated background gradient */
+            background: linear-gradient(135deg, #32b699 0%, #4886f7 100%);
+            min-height: 100vh; /* Ensure full viewport height */
             display: flex;
-            flex-direction: column; /* Allow content and nav to stack */
+            flex-direction: column;
             box-sizing: border-box;
         }
 
         /* Navigation Bar Styling */
         .navbar {
             width: 100%;
-            background-color: #34495e; /* Darker blue-gray */
-            padding: 15px 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            /* Updated background color and shadow */
+            background-color: #222d43;
+            padding: 14px 20px;
+            box-shadow: 0 6px 18px rgba(18,28,75,0.09);
             display: flex;
-            justify-content: center; /* Center buttons */
+            justify-content: center;
             align-items: center;
             gap: 20px;
-            z-index: 100; /* Ensure navbar is above page content */
+            z-index: 100;
+            position: relative; /* Added for better z-indexing */
             box-sizing: border-box;
         }
         .nav-buttons {
             display: flex;
-            gap: 15px;
+            gap: 17px; /* Updated gap */
         }
         .nav-button {
-            background-color: #2ecc71; /* Vibrant green */
-            color: white;
-            padding: 10px 20px;
+            /* Updated button styles */
+            background: linear-gradient(90deg,#48c6ef 0%,#6f86d6 80%);
+            color: #fff;
+            padding: 10px 24px;
             border: none;
-            border-radius: 0.5rem;
+            border-radius: 2em; /* More rounded */
             cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+            font-size: 1.05rem; /* Slightly larger */
+            font-weight: 700; /* Bolder */
+            letter-spacing: 0.02em;
+            margin: 0 1px;
+            transition: background 0.18s, transform 0.16s, box-shadow 0.18s;
+            box-shadow: 0 2px 8px rgba(48,198,239,0.11);
+            outline: none;
         }
-        .nav-button:hover {
-            background-color: #27ae60; /* Darker vibrant green */
-            transform: translateY(-2px);
+        .nav-button:hover, .nav-button:focus {
+            /* Updated hover/focus styles */
+            background: linear-gradient(90deg,#72efdd 0%,#48c6ef 100%);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 4px 18px rgba(32,186,201,0.19);
+        }
+
+        /* Back to Top Button */
+        #back-to-top {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            display: none; /* Hidden by default, shown via JS */
+            background: linear-gradient(90deg,#2ecc71 20%,#3498db 90%);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 49px;
+            height: 49px;
+            font-size: 2rem;
+            cursor: pointer;
+            z-index: 1500;
+            box-shadow: 0 2px 16px #31997c44;
+            transition: background 0.19s, transform 0.16s;
+        }
+        #back-to-top:hover {
+            background: linear-gradient(90deg,#3498db 0%,#2ecc71 100%);
+            transform: scale(1.09);
         }
 
         /* Page Container Styling */
         .page-container {
-            width: 100%; /* Take full width */
-            flex-grow: 1; /* Allow page to take remaining height */
-            background-color: #ffffff;
-            border-radius: 0;
-            box-shadow: none;
-            padding: 20px;
+            width: 100%;
+            flex-grow: 1;
+            background-color: #fff;
             box-sizing: border-box;
-            overflow-y: auto; /* Allow individual page content to scroll */
-            display: none; /* Hidden by default */
-            transition: filter 0.4s ease-in-out; /* Smooth transition for blur */
-            /* Added flex properties for when it's active */
-            flex-direction: column; /* Stack content vertically */
-            align-items: center; /* Center content horizontally within the page */
+            overflow-y: auto;
+            display: none;
+            transition: opacity 0.5s; /* Smooth transition for page changes */
+            min-height: 90vh; /* Ensure pages take up most of the height */
+            flex-direction: column;
+            align-items: center;
         }
         .page-container.active-page {
-            display: flex; /* Change to flex when active for better layout control */
+            display: flex; /* Changed to flex for better content control */
+            opacity: 1;
+            animation: fadeIn 0.9s; /* Fade in animation */
         }
-        /* Class for blurring the background content */
+        @keyframes fadeIn {
+            from { opacity: 0.2; transform: translateY(25px);}
+            to { opacity: 1; transform: none;}
+        }
         .blurred-content {
             filter: blur(5px);
-            pointer-events: none; /* Prevent interaction with blurred content */
+            pointer-events: none;
         }
 
-        /* Home Page Specific Styling */
+        /* HERO BANNER */
+        .hero-banner {
+            width: 100%;
+            position: relative;
+            border-radius: 1.2rem;
+            box-shadow: 0 8px 32px rgba(44, 62, 80, 0.09);
+            overflow: hidden;
+            max-width: 1100px;
+            margin-bottom: 32px;
+            animation: fadeIn 1.2s;
+        }
+        .hero-banner img {
+            width: 100%;
+            min-height: 260px;
+            max-height: 410px;
+            object-fit: cover;
+            filter: brightness(0.72);
+        }
+        .hero-text {
+            position: absolute;
+            left: 65px; top: 50%;
+            transform: translateY(-50%);
+            color: #fff;
+            text-shadow: 0 5px 30px #0009, 0 1px 0 #222a;
+        }
+        .hero-text h1 {
+            font-size: 3.4rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            margin-bottom: 14px;
+            line-height: 1.05;
+            text-shadow: 0 0.5px 6px #0003;
+        }
+        .hero-text p {
+            font-size: 1.42rem;
+            line-height: 1.25;
+            margin-top: 12px;
+            letter-spacing: 0.04em;
+            color: #ffffffee;
+        }
+
+        /* Quick Links Cards below HERO */
+        .quick-links {
+            display: flex;
+            gap: 23px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 46px;
+        }
+        .quick-card {
+            border: none;
+            border-radius: 1.1rem;
+            background: linear-gradient(135deg,#48c6ef 0%,#38ef7d 100%);
+            color: #fff;
+            box-shadow: 0 3px 14px rgba(76,201,240,0.13);
+            padding: 20px 34px 22px 28px;
+            text-align: left;
+            width: 256px; min-width:173px;
+            font-size: 1.11rem;
+            font-family: inherit;
+            cursor: pointer;
+            outline: none;
+            transition: transform 0.14s, box-shadow 0.23s, background 0.25s;
+            margin: 0 4px 10px 4px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: flex-start;
+        }
+        .quick-card span.emoji {
+            font-size: 2.25rem;
+            margin-bottom: 3px; line-height: 1;
+        }
+        .quick-card strong {
+            font-size: 1.24rem;
+            letter-spacing:0.01em;
+        }
+        .quick-card:hover {
+            transform: translateY(-6px) scale(1.04);
+            box-shadow: 0 10px 44px rgba(38,205,199,0.17);
+            background: linear-gradient(135deg,#72efdd 13%,#48c6ef 100%);
+        }
+        /* "Did You Know?" Bubble */
+        .did-you-know {
+            background: linear-gradient(100deg, #fff4b4 60%, #27aedbab 120%);
+            border-left: 7px solid #6699f8;
+            color: #285b4e;
+            font-weight: 600;
+            padding: 20px 24px;
+            margin: 24px auto 0 auto;
+            font-size: 1.2rem;
+            border-radius: 1.3em;
+            max-width: 640px;
+            box-shadow: 0 8px 48px #ffd60011;
+            position: relative;
+        }
+        .did-you-know .emoji {
+            font-size: 1.76em; position: absolute; left: 1.1em; top: 1em; opacity: 0.8;
+        }
+
+        /* Home Page Section Styling */
         #home-page {
-            /* Inherits display:flex, flex-direction:column, align-items:center from .page-container.active-page */
-            justify-content: flex-start; /* Align content to start */
-            height: 100%; /* Take full height of its parent */
-            padding-top: 40px; /* Add some space from the top */
-            box-sizing: border-box; /* Include padding in height calculation */
+            justify-content: flex-start;
+            padding-top: 32px; /* Adjusted padding */
+            min-height: 82vh; /* Adjusted minimum height */
+            box-sizing: border-box;
         }
         #home-page h2 {
-            font-size: 3.5rem;
-            color: #2c3e50;
-            margin-bottom: 20px;
+            font-size: 2.5rem; /* Adjusted font size */
+            color: #226280; /* Updated color */
+            margin-bottom: 17px; /* Adjusted margin */
+            text-shadow: 0 2px 10px #82c8f866; /* Added text shadow */
         }
         #home-page p {
-            font-size: 1.2rem;
-            color: #7f8c8d;
-            margin-bottom: 30px;
-            max-width: 800px; /* Wider paragraph for more content */
-            line-height: 1.6;
+            font-size: 1.17rem; /* Adjusted font size */
+            color: #426894; /* Updated color */
+            margin-bottom: 16px; /* Adjusted margin */
+            max-width: 740px; /* Adjusted max-width */
+            line-height: 1.7; /* Adjusted line height */
+            letter-spacing: 0.01em;
         }
         .home-section {
             width: 100%;
-            max-width: 800px;
+            max-width: 850px; /* Adjusted max-width */
             text-align: left;
-            margin-bottom: 40px;
-            padding: 20px;
-            background-color: #f8f8f8; /* Slightly off-white for sections */
+            margin-bottom: 42px; /* Adjusted margin */
+            padding: 22px 20px 20px 30px; /* Adjusted padding */
+            background: linear-gradient(111deg,#e6faff 50%, #f8f8f8 100%); /* Updated background */
             border-radius: 1rem;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 13px rgba(52,152,219,0.06); /* Updated shadow */
         }
         .home-section h3 {
             font-size: 2rem;
-            color: #34495e;
+            color: #1c4366; /* Updated color */
             margin-bottom: 15px;
             border-bottom: 2px solid #a2d9ce;
-            padding-bottom: 10px;
+            padding-bottom: 9px; /* Adjusted padding */
+            font-weight: 700; /* Bolder */
         }
         .home-section h4 {
-            font-size: 1.5rem;
+            font-size: 1.17rem; /* Adjusted font size */
             color: #2ecc71;
-            margin-top: 20px;
-            margin-bottom: 10px;
+            margin-top: 17px; /* Adjusted margin */
+            margin-bottom: 7px; /* Adjusted margin */
+            font-weight: 700; /* Bolder */
         }
         .home-section ul {
-            list-style: none; /* Remove default bullet points */
+            list-style: none;
             padding: 0;
         }
         .home-section ul li {
-            margin-bottom: 10px;
-            color: #555;
-            line-height: 1.5;
+            margin-bottom: 11px; /* Adjusted margin */
+            color: #305871; /* Updated color */
+            line-height: 1.56; /* Adjusted line height */
         }
         .home-section ul li strong {
-            color: #34495e;
+            color: #2d5384; /* Updated color */
         }
         .home-buttons {
-            margin-top: 30px;
+            margin-top: 29px; /* Adjusted margin */
         }
         .home-buttons .nav-button {
-            font-size: 1.2rem;
-            padding: 15px 30px;
+            font-size: 1.12rem; /* Adjusted font size */
+            padding: 14px 28px; /* Adjusted padding */
         }
 
-        /* Highways Page (Existing Map Content) Styling */
+        /* Highways Page Styling */
         #highways-page {
-            /* Inherits display:flex, flex-direction:column, align-items:center from .page-container.active-page */
-            height: 100%; /* Ensure it takes full height */
+            height: 100%;
             box-sizing: border-box;
         }
         #highways-page h1 {
             text-align: center;
-            margin-bottom: 40px;
-            color: #2c3e50;
-            font-size: 3rem;
+            margin-bottom: 36px; /* Adjusted margin */
+            color: #214764; /* Updated color */
+            font-size: 2.42rem; /* Adjusted font size */
             font-weight: bold;
+            text-shadow: 0 1px 8px #58c7f128; /* Added text shadow */
+        }
+        /* Search Bar */
+        #location-search {
+            width: 70%;
+            padding: 11px 10px 11px 55px;
+            margin: 7px auto 30px auto;
+            display: block;
+            font-size: 1.13rem;
+            border-radius: 1.7em;
+            border: 1.2px solid #8fd3f4;
+            background: #fffefa url('https://img.icons8.com/fluency-systems-regular/48/search.png') no-repeat 15px center/26px 26px;
+            box-shadow: 0 2px 6px rgba(170,210,224,0.12);
+            transition: border-color 0.19s;
+        }
+        #location-search:focus {
+            outline: 0;
+            border-color: #48c6ef;
         }
         .map {
             display: flex;
             flex-direction: column;
-            gap: 50px;
+            gap: 42px; /* Adjusted gap */
             position: relative;
-            width: 100%; /* Ensure map takes full width of its parent */
-            max-width: 800px; /* Limit map width for readability */
+            width: 100%;
+            max-width: 850px; /* Adjusted max-width */
         }
         .road {
             position: relative;
-            background-color: #e8f5e9; /* Light green */
-            padding: 25px;
-            border-radius: 1rem;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(90deg,#e7faff 60%,#e8f5e9 100%); /* Updated background */
+            padding: 24px 20px 15px 29px; /* Adjusted padding */
+            border-radius: 1.13rem; /* Adjusted border-radius */
+            box-shadow: 0 6px 12px #aac5ea12; /* Updated shadow */
             cursor: pointer;
-            transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            transition: background 0.19s, box-shadow 0.22s; /* Updated transition */
         }
         .road:hover {
-            background-color: #d4edda; /* Lighter green on hover */
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            background: linear-gradient(90deg,#ccf2fa 60%,#d4edda 100%); /* Updated hover background */
+            box-shadow: 0 11px 22px #8fd3f428; /* Updated hover shadow */
         }
         .road h2 {
-            margin-bottom: 10px;
+            margin-bottom: 8px; /* Adjusted margin */
             color: #34495e;
             font-size: 2rem;
             font-weight: 700;
         }
+        .road h2::before {
+            content: "🛣️ "; /* Added emoji */
+            font-size: 1.17em;
+            vertical-align: middle;
+        }
         .dev-info {
-            margin-bottom: 15px;
-            font-size: 0.9rem;
+            margin-bottom: 12px; /* Adjusted margin */
+            font-size: 1rem; /* Adjusted font size */
             color: #7f8c8d;
         }
         .locations {
-            display: none; /* Hidden by default */
+            display: none;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 11px; /* Adjusted gap */
             position: relative;
             border-top: 3px solid #a2d9ce;
-            padding-top: 20px;
+            padding-top: 16px; /* Adjusted padding */
         }
         .locations.is-visible {
-            display: flex; /* Show when active */
+            display: flex;
+            animation: fadeIn 0.45s; /* Added fade in animation */
         }
+        /* Location chips */
         .location {
-            background-color: #2ecc71; /* Vibrant green */
-            color: white;
-            padding: 10px 15px;
-            border-radius: 0.75rem;
+            background-color: #21bfa4; /* Updated background color */
+            color: #fff;
+            padding: 9px 16px 9px 13px; /* Adjusted padding */
+            border-radius: 1em; /* More rounded */
             cursor: pointer;
-            transition: background 0.3s ease-in-out, transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
-            white-space: nowrap;
-            font-size: 0.9rem;
+            font-size: 1.01rem; /* Adjusted font size */
             font-weight: 600;
+            box-shadow: 0 2px 14px rgba(32,186,201,0.13); /* Updated shadow */
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            transition: background 0.14s, box-shadow 0.14s, transform 0.18s; /* Updated transition */
+            position: relative;
         }
         .location:hover,
         .location.active {
-            background-color: #27ae60;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(90deg,#48dedc 35%,#2ecc71 90%); /* Updated hover background */
+            box-shadow: 0 6px 18px rgba(52,193,151,0.17); /* Updated hover shadow */
+            color: #fff;
+            transform: scale(1.04);
+        }
+        .location::before {
+            content: "📍"; /* Added emoji */
+            font-size: 1.2em;
+            margin-right: 2px;
+            opacity: 0.7;
         }
 
         /* Info Panel Styling */
         .info-panel {
             position: fixed;
             top: 0;
-            right: -100%; /* Hidden by default */
-            width: 350px;
-            max-width: 90vw;
+            right: -100%;
+            width: 360px; /* Adjusted width */
+            max-width: 97vw; /* Adjusted max-width */
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0,0,0,0.68); /* Adjusted background opacity */
             display: flex;
             justify-content: flex-end;
-            z-index: 1000;
-            transition: right 0.4s ease-in-out;
+            z-index: 1100; /* Adjusted z-index */
+            transition: right 0.39s; /* Adjusted transition */
         }
         .info-panel.active {
             right: 0;
         }
         .panel-content {
-            background: linear-gradient(135deg, #ffffff, #e0f2f7);
-            border-radius: 1.5rem 0 0 1.5rem;
-            padding: 30px;
+            background: linear-gradient(135deg, #ffffff 60%, #e0f6f7 100%); /* Updated background */
+            border-radius: 1.55rem 0 0 1.55rem; /* Adjusted border-radius */
+            padding: 30px 28px 29px 26px; /* Adjusted padding */
             width: 100%;
-            box-shadow: -5px 0 20px rgba(0, 0, 0, 0.3);
+            box-shadow: -5px 0 20px rgba(0, 0, 0, 0.33); /* Adjusted shadow */
             overflow-y: auto;
             position: relative;
             box-sizing: border-box;
             transform: translateX(100%);
-            transition: transform 0.4s ease-in-out;
+            transition: transform 0.37s; /* Adjusted transition */
         }
         .info-panel.active .panel-content {
             transform: translateX(0);
         }
 
         .close {
-            font-size: 28px;
+            font-size: 31px; /* Adjusted font size */
             position: absolute;
-            top: 15px;
-            right: 20px;
+            top: 13px; right: 23px; z-index:1200; /* Adjusted positioning and z-index */
             cursor: pointer;
-            color: #607d8b;
-            transition: color 0.2s;
-            z-index: 1001;
+            color: #48c6ef; /* Updated color */
+            transition: color 0.15s;
+            background: none; /* Removed background */
+            border: none; /* Removed border */
+            line-height: 1;
         }
-        .close:hover {
-            color: #4a5568;
-        }
+        .close:hover { color: #2ecc71;} /* Updated hover color */
         #info-content {
-            margin-top: 40px;
+            margin-top: 32px; /* Adjusted margin */
+            font-size: 1.06rem; /* Adjusted font size */
         }
         #info-content h2 {
-            font-size: 1.8rem;
-            color: #2c3e50;
+            font-size: 1.46rem; /* Adjusted font size */
+            color: #158b81; /* Updated color */
             margin-bottom: 1rem;
-            border-bottom: 1px solid #cce7f0;
-            padding-bottom: 0.5rem;
+            font-weight: 700; /* Bolder */
+            text-shadow: 0 3px 20px #38ef7d11; /* Added text shadow */
         }
         #info-content h3 {
-            font-size: 1.2rem;
-            color: #34495e;
-            margin-top: 1rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.08rem; /* Adjusted font size */
+            color: #4886f7; /* Updated color */
+            margin-top: 1rem; /* Adjusted margin */
+            margin-bottom: 0.4rem; /* Adjusted margin */
         }
         #info-content p {
             font-size: 1rem;
-            color: #7f8c8d;
+            color: #46637d; /* Updated color */
             line-height: 1.6;
-            margin-bottom: 1rem;
+            margin-bottom: 0.85rem; /* Adjusted margin */
         }
+        .location-thumb {
+            width: 99%;
+            max-height: 120px;
+            object-fit: cover;
+            border-radius: 0.65em;
+            margin-bottom: 1rem;
+            box-shadow: 0 1px 9px #cce7f011;
+            background: #f6faff center/cover;
+        }
+        .location-link {
+            display: inline-block;
+            margin-top: 6px;
+            padding: 6px 14px;
+            background: linear-gradient(90deg,#48c6ef 10%,#38ef7d 100%);
+            color: #fff;
+            font-weight: 600;
+            border-radius: 0.8em;
+            text-decoration: none;
+            box-shadow: 0 2px 9px #68e1b421;
+            transition: background 0.14s;
+        }
+        .location-link:hover { background: linear-gradient(90deg,#38ef7d 10%,#48c6ef 100%);}
+        .info-icons span {
+            font-size: 1.13em;
+            margin-right: 7px;
+            vertical-align: middle;
+        }
+        /* New styles for AI insights */
+        .ai-insights-section {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px dashed #a2d9ce;
+        }
+        .ai-insights-section h3 {
+            color: #1c4366;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+        .ai-insights-section p {
+            font-size: 0.95rem;
+            color: #46637d;
+            line-height: 1.5;
+        }
+        .generate-insights-btn {
+            background: linear-gradient(90deg, #f39c12 0%, #e67e22 100%); /* Orange gradient */
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+            box-shadow: 0 3px 8px rgba(243, 156, 18, 0.3);
+        }
+        .generate-insights-btn:hover {
+            background: linear-gradient(90deg, #e67e22 0%, #f39c12 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(243, 156, 18, 0.4);
+        }
+        .loading-message {
+            margin-top: 10px;
+            font-style: italic;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
 
         /* Responsive adjustments */
         @media (max-width: 768px) {
-            .navbar {
-                flex-direction: column;
-                gap: 10px;
-                padding: 10px;
-            }
-            .nav-buttons {
-                flex-direction: column;
-                width: 100%;
-                gap: 10px;
-            }
-            .nav-button {
-                width: 90%;
-                margin: 0 auto;
-            }
-            #home-page {
-                padding-top: 20px;
-            }
-            #home-page h2 {
-                font-size: 2.5rem;
-            }
-            #home-page p {
-                font-size: 1rem;
-            }
-            .home-section {
-                padding: 15px;
-                margin-bottom: 30px;
-            }
-            .home-section h3 {
-                font-size: 1.8rem;
-            }
-            .home-section h4 {
-                font-size: 1.3rem;
-            }
-            .home-buttons .nav-button {
-                font-size: 1rem;
-                padding: 10px 20px;
-            }
-            #highways-page h1 {
-                font-size: 2.2rem;
-                margin-bottom: 20px;
-            }
-            .road {
-                padding: 15px;
-            }
-            .road h2 {
-                font-size: 1.6rem;
-            }
-            .locations {
-                gap: 6px;
-            }
-            .location {
-                font-size: 0.75rem;
-                padding: 5px 8px;
-            }
-            #info-content h2 {
-                font-size: 1.6rem;
-            }
-            #info-content h3 {
-                font-size: 1.1rem;
-            }
-            #info-content p {
-                font-size: 0.85rem;
-            }
-            .info-panel {
-                width: 100vw;
-                justify-content: center;
-            }
+            .navbar { flex-direction: column; gap: 10px; padding: 10px;}
+            .nav-buttons { flex-direction: column; width: 100%; gap: 10px;}
+            .nav-button { width: 95%; margin: 0 auto;}
+            #home-page { padding-top:11px; }
+            #home-page h2 { font-size:2rem; }
+            #home-page p { font-size:1rem; }
+            .home-section { padding:11px 7px; margin-bottom:23px;}
+            .home-section h3 { font-size:1.17rem; }
+            .home-section h4 { font-size:1rem; }
+            .home-buttons .nav-button { font-size:1rem; padding:10px 18px;}
+            #highways-page h1 { font-size:1.3rem; margin-bottom:11px;}
+            .road { padding:10px 7px 6px 14px;}
+            .road h2 { font-size:1rem;}
+            .locations { gap: 3px;}
+            .location { font-size:0.75rem; padding:5px 7px;}
+            #info-content h2 { font-size:1.1rem;}
+            #info-content h3 { font-size:1rem;}
+            #info-content p { font-size:0.83rem;}
+            .info-panel { width: 100vw; justify-content: center;}
             .panel-content {
-                border-radius: 1.5rem 1.5rem 0 0;
+                border-radius: 1.55rem 1.55rem 0 0;
                 width: 100%;
-                height: 80vh;
+                height: calc(90vh - 25px);
                 position: absolute;
                 bottom: 0;
                 transform: translateY(100%);
             }
-            .info-panel.active .panel-content {
-                transform: translateY(0);
-            }
-            .close {
-                top: 15px;
-                left: 20px;
-            }
+            .info-panel.active .panel-content { transform: translateY(0);}
+            .close { top:15px; left:20px; right:auto;}
         }
     </style>
 </head>
 <body>
-    <div class="navbar">
+    <div class="navbar" aria-label="Main Navigation">
         <div class="nav-buttons">
-            <button class="nav-button" onclick="showPage('home-page')">Home</button>
-            <button class="nav-button" onclick="showPage('highways-page')">Highways</button>
+            <button class="nav-button" onclick="showPage('home-page')" aria-label="Go to Home">🏠 Home</button>
+            <button class="nav-button" onclick="showPage('highways-page')" aria-label="Explore Dubai Highways">🛣️ Highways</button>
         </div>
     </div>
 
+    <button id="back-to-top" title="Back to Top" aria-label="Back to Top">⬆️</button>
+
     <div class="page-container" id="home-page">
-        <h2>Welcome to Dubai Real Estate Explorer</h2>
+        <!-- Hero section -->
+        <div class="hero-banner" style="margin-top:16px;">
+            <img src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=1200&q=80"
+                alt="Dubai Skyline and Sheikh Zayed Road">
+            <div class="hero-text">
+                <h1>Dubai Real Estate Explorer</h1>
+                <p>
+                    Unfold the City of <b>Innovation</b>, <b>Luxury</b> & Opportunity.<br>
+                    All about <strong style="color:#ffd600">Highways</strong>, <strong style="color:#00eaff">Developers</strong> & <strong style="color:#45ea57">Rules</strong>!
+                </p>
+            </div>
+        </div>
+
+        <!-- Quick links (cards) -->
+        <div class="quick-links" aria-label="Quick Main Sections">
+            <button class="quick-card" onclick="showPage('highways-page')">
+                <span class="emoji">🗺️</span>
+                <strong>Highways Map</strong>
+                <span>Discover Dubai's main roads</span>
+            </button>
+            <button class="quick-card" onclick="scrollToSection('dev-entities')">
+                <span class="emoji">🏗️</span>
+                <strong>Developers & Entities</strong>
+                <span>Who builds Dubai?</span>
+            </button>
+            <button class="quick-card" onclick="scrollToSection('dld-forms')">
+                <span class="emoji">📑</span>
+                <strong>DLD Forms Guide</strong>
+                <span>Key real estate agreements</span>
+            </button>
+            <button class="quick-card" onclick="scrollToSection('rules-regs')">
+                <span class="emoji">⚖️</span>
+                <strong>Rules & Regulations</strong>
+                <span>For agents & buyers</span>
+            </button>
+        </div>
+
+        <!-- Did you know box -->
+        <div class="did-you-know" id="did-you-know">
+            <span id="didYouKnowText">
+                Did you know? <b>Dubai Land Department (DLD)</b> was founded in <b>1960</b> and registers all property transactions in the emirate!
+            </span>
+        </div>
+
+        <h2 style="margin-bottom:0;">Welcome to Dubai Real Estate Explorer</h2>
         <p>Your comprehensive guide to Dubai's dynamic real estate landscape, major highways, and key locations.</p>
 
-        <div class="home-section">
+        <div class="home-section" id="about-dubai">
             <h3>About Dubai</h3>
             <p>Dubai is a global city and business hub of the Middle East. It is also a major transport hub for passengers and cargo. Oil revenue helped accelerate the development of the city, but Dubai's economy is now built on tourism, trade, real estate, and financial services. It is known for its luxurious architecture, vibrant nightlife, and ambitious construction projects, offering a unique blend of traditional Arabian culture and modern cosmopolitan living.</p>
         </div>
-
-        <div class="home-section">
+        <div class="home-section" id="about-dld">
             <h3>About DLD (Dubai Land Department)</h3>
             <p>The Dubai Land Department (DLD) is the government entity responsible for regulating and promoting the real estate sector in Dubai. Established in 1960, DLD aims to create a transparent, fair, and efficient real estate market by providing various services, including property registration, dispute resolution, and issuing regulations. It ensures the rights of all parties involved in real estate transactions, fostering trust and investment in the emirate.</p>
             <p><strong>Managed by:</strong> Government of Dubai</p>
         </div>
 
-        <div class="home-section">
+        <div class="home-section" id="dev-entities">
             <h3>Key Government-Backed Developers & Entities</h3>
             <ul>
                 <li>
@@ -487,7 +724,7 @@
             </ul>
         </div>
 
-        <div class="home-section">
+        <div class="home-section" id="dld-forms">
             <h3>DLD Forms: Understanding Key Agreements</h3>
             <p>The Dubai Land Department (DLD) mandates specific forms to ensure transparency and legal clarity in real estate transactions. These forms are crucial for both buyers, sellers, and agents:</p>
             <ul>
@@ -551,7 +788,7 @@
             <p><strong>Overall Management of Taxes:</strong> Dubai Land Department (DLD) and Federal Tax Authority (FTA)</p>
         </div>
 
-        <div class="home-section">
+        <div class="home-section" id="rules-regs">
             <h3>Essential Rules and Regulations for Real Estate Agents in Dubai</h3>
             <p>Real estate agents in Dubai must adhere to strict regulations set by the Real Estate Regulatory Agency (RERA), a branch of the DLD, to ensure professionalism, transparency, and consumer protection. Key regulations include:</p>
             <ul>
@@ -597,33 +834,76 @@
 
     <div class="page-container" id="highways-page">
         <h1>Dubai Main Roads Map</h1>
+        <!-- Added a search bar to filter locations -->
+        <input type="text" id="location-search" placeholder="Search communities or landmarks…" aria-label="Search locations…" oninput="filterLocations(event)">
         <div class="map">
             <div class="road" id="e11-road-section">
                 <h2>E11 – Sheikh Zayed Road</h2>
-                <div class="dev-info">Developed by: Dubai Municipality | Managed by: RTA & Nakheel</div>
+                <div class="dev-info">Developed by: Dubai Municipality | Managed by: RTA &amp; Nakheel</div>
                 <div class="locations" id="e11-locations"></div>
             </div>
             <div class="road" id="e311-road-section">
                 <h2>E311 – Sheikh Mohammed Bin Zayed Road</h2>
-                <div class="dev-info">Developed by: Dubai Municipality | Managed by: Dubai Properties & Union Properties</div>
+                <div class="dev-info">Developed by: Dubai Municipality | Managed by: Dubai Properties &amp; Union Properties</div>
                 <div class="locations" id="e311-locations"></div>
             </div>
             <div class="road" id="e611-road-section">
                 <h2>E611 – Emirates Road</h2>
-                <div class="dev-info">Developed by: Dubai Municipality | Managed by: RTA & Meydan</div>
+                <div class="dev-info">Developed by: Dubai Municipality | Managed by: RTA &amp; Meydan</div>
                 <div class="locations" id="e611-locations"></div>
             </div>
         </div>
     </div>
 
-    <div class="info-panel" id="info-panel">
+    <div class="info-panel" id="info-panel" aria-modal="true" role="dialog">
         <div class="panel-content">
-            <span class="close" onclick="closePanel()">×</span>
+            <button class="close" onclick="closePanel()" aria-label="Close">&times;</button>
             <div id="info-content"></div>
         </div>
     </div>
 
     <script>
+        // ----- DYNAMIC DID YOU KNOW SNIPPETS -----
+        const didYouKnowFacts = [
+            "Did you know? <b>Dubai Land Department (DLD)</b> was founded in <b>1960</b> and registers all property transactions in the emirate!",
+            "Dubai's <b>Palm Jumeirah</b> is visible from space and added 520km of coastline!",
+            "No <b>annual property tax</b> is charged in Dubai—unique among major world cities.",
+            "The Burj Khalifa is the tallest building on earth and is managed by Emaar.",
+            "Dubai has <b>30+ master developers</b> and hundreds of communities.",
+            "All tenancy contracts in Dubai must be registered in <b>Ejari</b> (DLD e-system).",
+            "<b>Sheikh Zayed Road</b> (E11) is the UAE's longest road, running parallel to the coast.",
+            "Dubai's master communities are often named after their main developer (e.g., Emaar, Nakheel).",
+        ];
+        function randomDidYouKnow() {
+            document.getElementById('didYouKnowText').innerHTML =
+                didYouKnowFacts[Math.floor(Math.random() * didYouKnowFacts.length)];
+        }
+        // Show a new random "Did you know?" fact on each home page show
+        document.addEventListener('DOMContentLoaded', function() {
+            randomDidYouKnow();
+        });
+
+        // ----- SMOOTH SCROLL TO HOME SECTIONS -----
+        function scrollToSection(sectionId) {
+            const sec = document.getElementById(sectionId);
+            if(sec) sec.scrollIntoView({behavior:'smooth', block:'start'});
+        }
+
+        // ----- BACK TO TOP BUTTON -----
+        const backToTopBtn = document.getElementById('back-to-top');
+        function displayBackToTop() {
+            if(window.scrollY > 275) {
+                backToTopBtn.style.display = "block";
+            } else {
+                backToTopBtn.style.display = "none";
+            }
+        }
+        window.addEventListener('scroll', displayBackToTop);
+        backToTopBtn.addEventListener('click', function(){
+            window.scrollTo({top:0, behavior:'smooth'});
+        });
+
+        // ----- YOUR EXISTING JS DATA -----
         const locationsData = {
             e11: [
                 { id: "jebel-ali-free-zone", name: "Jebel Ali Free Zone (JAFZA)", developer: "DP World", manager: "DP World (Jafza)", famousFor: "One of the world's largest free zones, a global industrial and logistics hub." },
@@ -732,85 +1012,153 @@
             ]
         };
 
-        let currentPageId = ''; // To keep track of the currently active page
+        let currentPageId = '';
 
+        // --- ROAD SEARCH ---
+        function filterLocations(event) {
+            let query = event.target.value.toLowerCase();
+            document.querySelectorAll('.road').forEach(roadEl => {
+                const roadKey = roadEl.id.replace('-road-section', '');
+                const locations = locationsData[roadKey] || [];
+                const matches = locations.some(loc =>
+                    loc.name.toLowerCase().includes(query)
+                );
+                roadEl.style.display = (query === "" || matches) ? "" : "none";
+            });
+        }
+
+        // --- PAGE NAVIGATION ---
         function showPage(pageId) {
-            // Hide all pages
             document.querySelectorAll('.page-container').forEach(page => {
                 page.classList.remove('active-page');
             });
-
-            // Show the requested page
             const activePage = document.getElementById(pageId);
             if (activePage) {
                 activePage.classList.add('active-page');
-                currentPageId = pageId; // Update current page ID
-
-                // If switching away from highways, ensure all locations are hidden
+                currentPageId = pageId;
+                if (pageId === 'home-page') randomDidYouKnow(); // Refresh "Did you know?" on home page
                 if (pageId !== 'highways-page') {
                     document.querySelectorAll('.locations.is-visible').forEach(openLocations => {
                         openLocations.classList.remove('is-visible');
-                        openLocations.innerHTML = ''; // Clear content when hiding
+                        openLocations.innerHTML = '';
                     });
                 }
             }
-
-            // Close the info panel if open
-            closePanel();
+            closePanel(); // Close info panel when changing pages
+            window.scrollTo({top:0, behavior:'smooth'}); // Scroll to top of the new page
         }
 
+        // --- LOCATIONS CREATION ---
         function createLocations(roadId, data) {
             const container = document.getElementById(`${roadId}-locations`);
-            container.innerHTML = ''; // Clear existing locations before re-creating
+            container.innerHTML = '';
             data.forEach((loc, index) => {
                 const div = document.createElement("div");
                 div.className = "location";
-                // Add numbering to the location name
                 div.textContent = `${index + 1}. ${loc.name}`;
-                // Attach click listener to show info panel for individual location
-                div.onclick = (event) => {
-                    event.stopPropagation(); // Prevent road section from toggling when clicking a location
+                div.setAttribute('tabindex', 0); // Make locations focusable
+                div.onclick = function(event) {
+                    event.stopPropagation();
                     showInfo(loc, div);
                 };
                 container.appendChild(div);
             });
         }
 
+        // --- SHOW INFO PANEL ---
         function showInfo(location, element) {
             const infoPanel = document.getElementById("info-panel");
             const infoContent = document.getElementById("info-content");
-            // Apply blur to the currently active page container
             const activePageElement = document.getElementById(currentPageId);
 
-            // Remove active class from all locations
             document.querySelectorAll(".location").forEach(el => el.classList.remove("active"));
-            // Add active class to the clicked location
             element.classList.add("active");
+
+            // Optional: Use Unsplash (location-based) image as a placeholder
+            const photoSrc = `https://source.unsplash.com/600x120/?dubai,building,${encodeURIComponent(location.name)}`;
 
             infoContent.innerHTML = `
                 <h2>${location.name}</h2>
-                <h3>Developer:</h3>
+                <img src="${photoSrc}" alt="Photo of ${location.name}" class="location-thumb" onerror="this.style.display='none'">
+                <div class="info-icons"><span>🏢</span> <b>Developer:</b></div>
                 <p>${location.developer}</p>
-                <h3>Manager:</h3>
+                <div class="info-icons"><span>👨‍💼</span> <b>Manager:</b></div>
                 <p>${location.manager}</p>
-                <h3>Why It's Famous:</h3>
+                <div class="info-icons"><span>🌟</span> <b>Why It's Famous:</b></div>
                 <p>${location.famousFor}</p>
+                <button class="generate-insights-btn" onclick="getInvestmentInsights(${JSON.stringify(location).replace(/"/g, '&quot;')})">✨ Get Investment Insights</button>
+                <div id="ai-insights-output" class="ai-insights-section" style="display:none;">
+                    <h3>AI Investment Insights:</h3>
+                    <p id="ai-insights-text"></p>
+                </div>
             `;
+
             infoPanel.classList.add("active");
-            if (activePageElement) {
-                activePageElement.classList.add("blurred-content"); // Apply blur to the active page
+            if (activePageElement) activePageElement.classList.add("blurred-content");
+        }
+
+        async function getInvestmentInsights(location) {
+            const insightsOutputDiv = document.getElementById('ai-insights-output');
+            const insightsTextP = document.getElementById('ai-insights-text');
+            const generateButton = document.querySelector('.generate-insights-btn');
+
+            insightsOutputDiv.style.display = 'block';
+            insightsTextP.innerHTML = '<span class="loading-message">Generating insights...</span>';
+            generateButton.disabled = true; // Disable button during generation
+
+            const prompt = `Based on the following information about a Dubai location, provide a concise summary of its real estate investment potential, highlighting key aspects that would attract investors or residents. Focus on its famous features, developer, and manager.
+Location: ${location.name}
+Developer: ${location.developer}
+Manager: ${location.manager}
+Famous For: ${location.famousFor}
+Keep the response to 3-4 sentences.`;
+
+            let chatHistory = [];
+            chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+
+            const payload = { contents: chatHistory };
+            const apiKey = ""; // Canvas will provide this API key at runtime
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    insightsTextP.textContent = text;
+                } else {
+                    insightsTextP.textContent = "Could not generate insights. Please try again.";
+                    console.error("Gemini API response structure unexpected:", result);
+                }
+            } catch (error) {
+                insightsTextP.textContent = "Error generating insights. Please check your connection or try again later.";
+                console.error("Error calling Gemini API:", error);
+            } finally {
+                generateButton.disabled = false; // Re-enable the button
             }
         }
 
         function closePanel() {
             const infoPanel = document.getElementById("info-panel");
-            const activePageElement = document.getElementById(currentPageId); // Get the currently active page
-
+            const activePageElement = document.getElementById(currentPageId);
             infoPanel.classList.remove("active");
-            if (activePageElement) {
-                activePageElement.classList.remove("blurred-content"); // Remove blur from the active page
-            }
+            if (activePageElement) activePageElement.classList.remove("blurred-content");
             document.querySelectorAll(".location").forEach(el => el.classList.remove("active"));
+
+            // Hide AI insights section when closing panel
+            const insightsOutputDiv = document.getElementById('ai-insights-output');
+            if (insightsOutputDiv) {
+                insightsOutputDiv.style.display = 'none';
+                document.getElementById('ai-insights-text').textContent = ''; // Clear previous insights
+            }
         }
 
         // Event listener to close panel when clicking outside of panel-content
@@ -818,52 +1166,40 @@
             const infoPanel = document.getElementById("info-panel");
             const panelContent = infoPanel.querySelector('.panel-content');
             const clickedElement = event.target;
-
-            // Check if the panel is active and the click was outside the panel content
-            // and not on the close button itself, or any location button.
-            // Also, ensure it's not a click on the road section itself, as that has its own toggle.
             if (infoPanel.classList.contains('active') &&
                 !panelContent.contains(clickedElement) &&
                 !clickedElement.classList.contains('close') &&
                 !clickedElement.closest('.road') &&
-                !clickedElement.classList.contains('nav-button')) { /* Do not close if clicking a nav button */
+                !clickedElement.classList.contains('nav-button') &&
+                !clickedElement.classList.contains('generate-insights-btn')) { // Exclude insights button
                 closePanel();
             }
         });
 
-        // Add event listeners to road sections to toggle locations visibility
+        // --- ROAD SECTION TOGGLE ---
         document.querySelectorAll('.road').forEach(roadElement => {
             roadElement.addEventListener('click', (event) => {
-                // Check if the click originated from a .location button within this road,
-                // if so, let the .location's click handler manage it.
-                if (event.target.classList.contains('location')) {
-                    return;
-                }
-
-                const roadId = roadElement.id; // e.g., "e11-road-section"
-                const roadKey = roadId.replace('-road-section', ''); // e.g., "e11"
+                if (event.target.classList.contains('location')) return;
+                const roadId = roadElement.id;
+                const roadKey = roadId.replace('-road-section', '');
                 const locationsContainer = document.getElementById(`${roadKey}-locations`);
-
-                // Close any other open locations first
                 document.querySelectorAll('.locations.is-visible').forEach(openLocations => {
                     if (openLocations.id !== locationsContainer.id) {
                         openLocations.classList.remove('is-visible');
-                        openLocations.innerHTML = ''; // Clear content when hiding
+                        openLocations.innerHTML = '';
                     }
                 });
-
-                // Toggle visibility of the clicked road's locations
                 if (locationsContainer.classList.contains('is-visible')) {
                     locationsContainer.classList.remove('is-visible');
-                    locationsContainer.innerHTML = ''; // Clear content when hiding
+                    locationsContainer.innerHTML = '';
                 } else {
-                    createLocations(roadKey, locationsData[roadKey]); // Populate and show
+                    createLocations(roadKey, locationsData[roadKey]);
                     locationsContainer.classList.add('is-visible');
                 }
             });
         });
 
-        // Initial page load: Show the home page
+        // --- INITIAL LOAD ---
         document.addEventListener('DOMContentLoaded', () => {
             showPage('home-page');
         });
