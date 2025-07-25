@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Dubai Road Map</title>
+    <link rel="icon" type="image/x-icon" href="https://wallpapers.com/images/hd/exceptional-dubai-z03qow0d0d3yuumg.jpg">
     <style>
         /* Import Google Font 'Inter' */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
@@ -14,8 +15,8 @@
             margin: 0;
             padding: 0;
             font-family: 'Inter', sans-serif;
-            /* Updated background gradient */
-            background: linear-gradient(135deg, #32b699 0%, #4886f7 100%);
+            /* Changed background to pure white */
+            background-color: #ffffff;
             min-height: 100vh; /* Ensure full viewport height */
             display: flex;
             flex-direction: column;
@@ -91,9 +92,9 @@
         .page-container {
             width: 100%;
             flex-grow: 1;
-            background-color: #fff;
+            background-color: #fff; /* This ensures the content area remains white */
             box-sizing: border-box;
-            overflow-y: auto;
+            /* Removed overflow-y: auto; to allow window scrolling */
             display: none;
             transition: opacity 0.5s; /* Smooth transition for page changes */
             min-height: 90vh; /* Ensure pages take up most of the height */
@@ -302,7 +303,7 @@
             font-size: 1.13rem;
             border-radius: 1.7em;
             border: 1.2px solid #8fd3f4;
-            background: #fffefa url('https://img.icons8.com/fluency-systems-regular/48/search.png') no-repeat 15px center/26px 26px;
+            background: #fffefa url('https://wallpapers.com/images/hd/exceptional-dubai-z03qow0d0d3yuumg.jpg') no-repeat 15px center/30px 30px; /* Adjusted size and position */
             box-shadow: 0 2px 6px rgba(170,210,224,0.12);
             transition: border-color 0.19s;
         }
@@ -800,7 +801,7 @@
                 <li>
                     <h4>Exclusive Listing Agreements (Form A)</h4>
                     <p><strong>Requirement:</strong> Agents must have a signed Form A (Seller's Agreement) with the property owner to market a property exclusively. Marketing without a valid Form A is illegal.</p>
-                    <p><strong>Managed by:</strong> RERA</p>
+                    <p><strong>Managed by:</b> RERA</p>
                 </li>
                 <li>
                     <h4>Advertising Regulations</h4>
@@ -873,6 +874,15 @@
             "All tenancy contracts in Dubai must be registered in <b>Ejari</b> (DLD e-system).",
             "<b>Sheikh Zayed Road</b> (E11) is the UAE's longest road, running parallel to the coast.",
             "Dubai's master communities are often named after their main developer (e.g., Emaar, Nakheel).",
+            "The <b>Dubai Metro</b> is the longest automated metro network in the world.",
+            "Dubai is home to the <b>largest shopping mall</b> globally by total area, The Dubai Mall.",
+            "The city's official language is Arabic, but English is widely spoken and understood.",
+            "Dubai aims to be the <b>happiest city on Earth</b>, with initiatives like the Ministry of Happiness.",
+            "The <b>Dubai Fountain</b> is the world's largest choreographed fountain system.",
+            "Dubai's economy is highly diversified, with oil contributing less than 5% to its GDP.",
+            "The <b>Dubai Gold Souk</b> is one of the oldest and largest traditional markets in Dubai.",
+            "Dubai hosts the annual <b>Dubai Shopping Festival</b>, attracting millions of tourists.",
+            "The city has a <b>zero income tax policy</b> for individuals, making it attractive for professionals."
         ];
         function randomDidYouKnow() {
             document.getElementById('didYouKnowText').innerHTML =
@@ -892,12 +902,14 @@
         // ----- BACK TO TOP BUTTON -----
         const backToTopBtn = document.getElementById('back-to-top');
         function displayBackToTop() {
+            // Check the scroll position of the main window/document
             if(window.scrollY > 275) {
                 backToTopBtn.style.display = "block";
             } else {
                 backToTopBtn.style.display = "none";
             }
         }
+        // Listen for scroll events on the window/document
         window.addEventListener('scroll', displayBackToTop);
         backToTopBtn.addEventListener('click', function(){
             window.scrollTo({top:0, behavior:'smooth'});
@@ -974,7 +986,7 @@
                 { id: "towards-sharjah-e11", name: "Towards Sharjah", developer: "RTA", manager: "RTA", famousFor: "The continuation of E11 leading towards the emirate of Sharjah." }
             ],
             e311: [
-                { id: "jebel-ali-industrial-e311", name: "Jebel Ali Industrial", developer: "Various developers", manager: "Various entities", famousFor: "Manufacturing & warehouse hub along E311." },
+                { id: "jebel-ali-industrial-e311", name: "Jebel Ali Industrial", name: "Jebel Ali Industrial", developer: "Various developers", manager: "Various entities", famousFor: "Manufacturing & warehouse hub along E311." },
                 { id: "dip", name: "DIP (Dubai Investments Park)", developer: "Dubai Investments", manager: "Dubai Investments", famousFor: "A mixed-use development with industrial, commercial, and residential zones." },
                 { id: "dubai-production-city", name: "Dubai Production City (IMPZ)", developer: "TECOM Group", manager: "TECOM Group", famousFor: "A free zone dedicated to media production and printing industries." },
                 { id: "dubai-sports-city", name: "Dubai Sports City", developer: "Dubai Properties", manager: "Dubai Properties and community management.", famousFor: "A multi-venue sports complex with residential and commercial properties." },
