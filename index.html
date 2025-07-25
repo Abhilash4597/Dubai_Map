@@ -12,21 +12,62 @@
             padding: 0; /* Remove default padding */
             font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); /* Eye-catching gradient */
-            display: flex; /* Use flexbox for centering */
-            justify-content: center;
-            align-items: center;
+            display: flex;
+            flex-direction: column; /* Allow content and nav to stack */
             box-sizing: border-box;
         }
-        .container {
-            width: 100%; /* Take full width */
-            height: 100%; /* Take full height of parent */
-            background-color: #ffffff;
-            border-radius: 0; /* Remove rounded corners for full page feel */
-            box-shadow: none; /* Remove shadow for full page feel */
-            padding: 20px; /* Adjust padding for full width */
+
+        /* Navigation Bar Styling */
+        .navbar {
+            width: 100%;
+            background-color: #34495e; /* Darker blue-gray */
+            padding: 15px 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center; /* Center buttons */
+            align-items: center;
+            gap: 20px;
+            z-index: 100; /* Ensure navbar is above page content */
             box-sizing: border-box;
+        }
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        .nav-button {
+            background-color: #2ecc71; /* Vibrant green */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+        }
+        .nav-button:hover {
+            background-color: #27ae60; /* Darker vibrant green */
+            transform: translateY(-2px);
+        }
+
+        /* Page Container Styling */
+        .page-container {
+            width: 100%; /* Take full width */
+            flex-grow: 1; /* Allow page to take remaining height */
+            background-color: #ffffff;
+            border-radius: 0;
+            box-shadow: none;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto; /* Allow individual page content to scroll */
+            display: none; /* Hidden by default */
             transition: filter 0.4s ease-in-out; /* Smooth transition for blur */
-            overflow-y: auto; /* Allow container to scroll if its content overflows */
+            /* Added flex properties for when it's active */
+            flex-direction: column; /* Stack content vertically */
+            align-items: center; /* Center content horizontally within the page */
+        }
+        .page-container.active-page {
+            display: flex; /* Change to flex when active for better layout control */
         }
         /* Class for blurring the background content */
         .blurred-content {
@@ -34,26 +75,97 @@
             pointer-events: none; /* Prevent interaction with blurred content */
         }
 
-        h1 {
+        /* Home Page Specific Styling */
+        #home-page {
+            /* Inherits display:flex, flex-direction:column, align-items:center from .page-container.active-page */
+            justify-content: flex-start; /* Align content to start */
+            height: 100%; /* Take full height of its parent */
+            padding-top: 40px; /* Add some space from the top */
+            box-sizing: border-box; /* Include padding in height calculation */
+        }
+        #home-page h2 {
+            font-size: 3.5rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        #home-page p {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            max-width: 800px; /* Wider paragraph for more content */
+            line-height: 1.6;
+        }
+        .home-section {
+            width: 100%;
+            max-width: 800px;
+            text-align: left;
+            margin-bottom: 40px;
+            padding: 20px;
+            background-color: #f8f8f8; /* Slightly off-white for sections */
+            border-radius: 1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+        .home-section h3 {
+            font-size: 2rem;
+            color: #34495e;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #a2d9ce;
+            padding-bottom: 10px;
+        }
+        .home-section h4 {
+            font-size: 1.5rem;
+            color: #2ecc71;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .home-section ul {
+            list-style: none; /* Remove default bullet points */
+            padding: 0;
+        }
+        .home-section ul li {
+            margin-bottom: 10px;
+            color: #555;
+            line-height: 1.5;
+        }
+        .home-section ul li strong {
+            color: #34495e;
+        }
+        .home-buttons {
+            margin-top: 30px;
+        }
+        .home-buttons .nav-button {
+            font-size: 1.2rem;
+            padding: 15px 30px;
+        }
+
+        /* Highways Page (Existing Map Content) Styling */
+        #highways-page {
+            /* Inherits display:flex, flex-direction:column, align-items:center from .page-container.active-page */
+            height: 100%; /* Ensure it takes full height */
+            box-sizing: border-box;
+        }
+        #highways-page h1 {
             text-align: center;
-            margin-bottom: 40px; /* More spacing */
-            color: #2c3e50; /* Darker, strong text */
-            font-size: 3rem; /* Slightly larger */
+            margin-bottom: 40px;
+            color: #2c3e50;
+            font-size: 3rem;
             font-weight: bold;
         }
         .map {
             display: flex;
             flex-direction: column;
-            gap: 50px; /* Spacing between roads */
+            gap: 50px;
             position: relative;
+            width: 100%; /* Ensure map takes full width of its parent */
+            max-width: 800px; /* Limit map width for readability */
         }
         .road {
             position: relative;
             background-color: #e8f5e9; /* Light green */
-            padding: 25px; /* Slightly more padding */
+            padding: 25px;
             border-radius: 1rem;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Slightly stronger shadow */
-            cursor: pointer; /* Indicate clickable area */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
             transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
         }
         .road:hover {
@@ -62,22 +174,22 @@
         }
         .road h2 {
             margin-bottom: 10px;
-            color: #34495e; /* Darker text */
+            color: #34495e;
             font-size: 2rem;
             font-weight: 700;
         }
         .dev-info {
             margin-bottom: 15px;
             font-size: 0.9rem;
-            color: #7f8c8d; /* Medium gray */
+            color: #7f8c8d;
         }
         .locations {
             display: none; /* Hidden by default */
             flex-wrap: wrap;
             gap: 10px;
             position: relative;
-            border-top: 3px solid #a2d9ce; /* Soft teal line */
-            padding-top: 20px; /* More padding */
+            border-top: 3px solid #a2d9ce;
+            padding-top: 20px;
         }
         .locations.is-visible {
             display: flex; /* Show when active */
@@ -85,19 +197,19 @@
         .location {
             background-color: #2ecc71; /* Vibrant green */
             color: white;
-            padding: 10px 15px; /* Slightly larger buttons */
-            border-radius: 0.75rem; /* More rounded */
+            padding: 10px 15px;
+            border-radius: 0.75rem;
             cursor: pointer;
             transition: background 0.3s ease-in-out, transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3); /* Stronger shadow */
-            white-space: nowrap; /* Prevent text wrapping */
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+            white-space: nowrap;
             font-size: 0.9rem;
             font-weight: 600;
         }
         .location:hover,
         .location.active {
-            background-color: #27ae60; /* Darker vibrant green */
-            transform: translateY(-3px); /* More pronounced lift */
+            background-color: #27ae60;
+            transform: translateY(-3px);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
         }
 
@@ -107,31 +219,31 @@
             top: 0;
             right: -100%; /* Hidden by default */
             width: 350px;
-            max-width: 90vw; /* Responsive width */
+            max-width: 90vw;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7); /* Slightly darker overlay */
+            background: rgba(0, 0, 0, 0.7);
             display: flex;
-            justify-content: flex-end; /* Align panel to the right */
-            z-index: 1000; /* Ensure panel is above blurred content */
+            justify-content: flex-end;
+            z-index: 1000;
             transition: right 0.4s ease-in-out;
         }
         .info-panel.active {
             right: 0;
         }
         .panel-content {
-            background: linear-gradient(135deg, #ffffff, #e0f2f7); /* Subtle light blue gradient */
-            border-radius: 1.5rem 0 0 1.5rem; /* Rounded on left side only */
-            padding: 30px; /* More padding */
-            width: 100%; /* Takes full width of info-panel */
-            box-shadow: -5px 0 20px rgba(0, 0, 0, 0.3); /* Stronger shadow */
+            background: linear-gradient(135deg, #ffffff, #e0f2f7);
+            border-radius: 1.5rem 0 0 1.5rem;
+            padding: 30px;
+            width: 100%;
+            box-shadow: -5px 0 20px rgba(0, 0, 0, 0.3);
             overflow-y: auto;
             position: relative;
             box-sizing: border-box;
-            transform: translateX(100%); /* Initial position for slide-in */
+            transform: translateX(100%);
             transition: transform 0.4s ease-in-out;
         }
         .info-panel.active .panel-content {
-            transform: translateX(0); /* Slide in */
+            transform: translateX(0);
         }
 
         .close {
@@ -140,9 +252,9 @@
             top: 15px;
             right: 20px;
             cursor: pointer;
-            color: #607d8b; /* Medium grey */
+            color: #607d8b;
             transition: color 0.2s;
-            z-index: 1001; /* Ensure close button is above panel content */
+            z-index: 1001;
         }
         .close:hover {
             color: #4a5568;
@@ -154,7 +266,7 @@
             font-size: 1.8rem;
             color: #2c3e50;
             margin-bottom: 1rem;
-            border-bottom: 1px solid #cce7f0; /* Lighter border */
+            border-bottom: 1px solid #cce7f0;
             padding-bottom: 0.5rem;
         }
         #info-content h3 {
@@ -170,34 +282,47 @@
             margin-bottom: 1rem;
         }
 
-        /* Responsive adjustments for info panel */
+        /* Responsive adjustments */
         @media (max-width: 768px) {
-            .info-panel {
-                width: 100vw; /* Full width on small screens */
-                justify-content: center; /* Center panel on small screens */
+            .navbar {
+                flex-direction: column;
+                gap: 10px;
+                padding: 10px;
             }
-            .panel-content {
-                border-radius: 1.5rem 1.5rem 0 0; /* Rounded on top corners */
+            .nav-buttons {
+                flex-direction: column;
                 width: 100%;
-                height: 80vh; /* Take up 80% of viewport height */
-                position: absolute;
-                bottom: 0;
-                transform: translateY(100%); /* Slide up from bottom */
+                gap: 10px;
             }
-            .info-panel.active .panel-content {
-                transform: translateY(0);
+            .nav-button {
+                width: 90%;
+                margin: 0 auto;
             }
-            .close {
-                top: 15px;
-                left: 20px; /* Move close button to left on mobile */
+            #home-page {
+                padding-top: 20px;
             }
-            .container {
-                padding: 15px; /* Keep padding for mobile */
-                border-radius: 0; /* No border radius on mobile for full page */
-                box-shadow: none; /* No shadow on mobile for full page */
+            #home-page h2 {
+                font-size: 2.5rem;
             }
-            h1 {
-                font-size: 2.2rem; /* Adjust font size for mobile */
+            #home-page p {
+                font-size: 1rem;
+            }
+            .home-section {
+                padding: 15px;
+                margin-bottom: 30px;
+            }
+            .home-section h3 {
+                font-size: 1.8rem;
+            }
+            .home-section h4 {
+                font-size: 1.3rem;
+            }
+            .home-buttons .nav-button {
+                font-size: 1rem;
+                padding: 10px 20px;
+            }
+            #highways-page h1 {
+                font-size: 2.2rem;
                 margin-bottom: 20px;
             }
             .road {
@@ -207,7 +332,7 @@
                 font-size: 1.6rem;
             }
             .locations {
-                gap: 6px; /* Slightly smaller gap on mobile */
+                gap: 6px;
             }
             .location {
                 font-size: 0.75rem;
@@ -222,12 +347,255 @@
             #info-content p {
                 font-size: 0.85rem;
             }
+            .info-panel {
+                width: 100vw;
+                justify-content: center;
+            }
+            .panel-content {
+                border-radius: 1.5rem 1.5rem 0 0;
+                width: 100%;
+                height: 80vh;
+                position: absolute;
+                bottom: 0;
+                transform: translateY(100%);
+            }
+            .info-panel.active .panel-content {
+                transform: translateY(0);
+            }
+            .close {
+                top: 15px;
+                left: 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- The main content container that will be blurred -->
-    <div class="container" id="main-container">
+    <div class="navbar">
+        <div class="nav-buttons">
+            <button class="nav-button" onclick="showPage('home-page')">Home</button>
+            <button class="nav-button" onclick="showPage('highways-page')">Highways</button>
+        </div>
+    </div>
+
+    <div class="page-container" id="home-page">
+        <h2>Welcome to Dubai Real Estate Explorer</h2>
+        <p>Your comprehensive guide to Dubai's dynamic real estate landscape, major highways, and key locations.</p>
+
+        <div class="home-section">
+            <h3>About Dubai</h3>
+            <p>Dubai is a global city and business hub of the Middle East. It is also a major transport hub for passengers and cargo. Oil revenue helped accelerate the development of the city, but Dubai's economy is now built on tourism, trade, real estate, and financial services. It is known for its luxurious architecture, vibrant nightlife, and ambitious construction projects, offering a unique blend of traditional Arabian culture and modern cosmopolitan living.</p>
+        </div>
+
+        <div class="home-section">
+            <h3>About DLD (Dubai Land Department)</h3>
+            <p>The Dubai Land Department (DLD) is the government entity responsible for regulating and promoting the real estate sector in Dubai. Established in 1960, DLD aims to create a transparent, fair, and efficient real estate market by providing various services, including property registration, dispute resolution, and issuing regulations. It ensures the rights of all parties involved in real estate transactions, fostering trust and investment in the emirate.</p>
+            <p><strong>Managed by:</strong> Government of Dubai</p>
+        </div>
+
+        <div class="home-section">
+            <h3>Key Government-Backed Developers & Entities</h3>
+            <ul>
+                <li>
+                    <h4>Nakheel Properties</h4>
+                    <p><strong>Description:</strong> A world-leading master developer, Nakheel is responsible for some of Dubai's most ambitious projects, including the Palm Jumeirah and The World Islands. It is a government-owned entity focusing on creating waterfront developments, residential communities, and retail destinations.</p>
+                    <p><strong>Managed by:</strong> Government of Dubai</p>
+                </li>
+                <li>
+                    <h4>Emaar Properties</h4>
+                    <p><strong>Description:</strong> One of the largest and most prestigious real estate developers globally, known for iconic projects like the Burj Khalifa and The Dubai Mall. Emaar has significant government ownership (via the Investment Corporation of Dubai, ICD) and plays a pivotal role in shaping Dubai's urban landscape.</p>
+                    <p><strong>Managed by:</strong> Significant government ownership/ties (via ICD)</p>
+                </li>
+                <li>
+                    <h4>Dubai South</h4>
+                    <p><strong>Description:</strong> A master-planned city encompassing Al Maktoum International Airport and the Expo 2020 site. Dubai South is a government-led initiative focused on aviation, logistics, commercial, and residential developments, aiming to become a global hub for trade and business.</p>
+                    <p><strong>Managed by:</strong> Dubai Aviation City Corporation (Government of Dubai)</p>
+                </li>
+                <li>
+                    <h4>wasl Properties</h4>
+                    <p><strong>Description:</strong> A subsidiary of the Dubai Real Estate Corporation (DREC), wasl Properties is a prominent government-owned real estate management and development company. It manages a diverse portfolio of residential and commercial properties, contributing significantly to Dubai's rental market and urban development.</p>
+                    <p><strong>Managed by:</strong> Dubai Real Estate Corporation (Government of Dubai)</p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="home-section">
+            <h3>Dubai Holding & Affiliated Real Estate Entities</h3>
+            <p>Dubai Holding is a diversified global investment company with operations across various sectors, including real estate. It manages a broad portfolio of assets and plays a strategic role in Dubai's economic development. Below are key real estate entities either directly under Dubai Holding or closely affiliated/partnered in government-backed initiatives:</p>
+            <ul>
+                <li>
+                    <h4>Dubai Properties (DP)</h4>
+                    <p><strong>Description:</strong> A prominent real estate master developer under Dubai Holding, focusing on creating and managing leading residential and mixed-use communities across Dubai, such as Jumeirah Beach Residence (JBR) and Dubailand.</p>
+                    <p><strong>Managed by:</strong> Dubai Holding (Direct Subsidiary)</p>
+                </li>
+                <li>
+                    <h4>Meraas</h4>
+                    <p><strong>Description:</strong> Now integrated into Dubai Holding, Meraas is known for developing innovative and vibrant lifestyle destinations, including City Walk, La Mer, and Bluewaters Island, enhancing Dubai's leisure, retail, and hospitality sectors.</p>
+                    <p><strong>Managed by:</strong> Dubai Holding (Integrated Entity)</p>
+                </li>
+                <li>
+                    <h4>TECOM Group</h4>
+                    <p><strong>Description:</strong> While primarily managing business parks and free zones (like Dubai Media City, Dubai Internet City, Dubai Knowledge Park), TECOM Group, a member of Dubai Holding, also develops and manages significant commercial and some residential real estate within these clusters.</p>
+                    <p><strong>Managed by:</strong> Dubai Holding (Direct Subsidiary)</p>
+                </li>
+                <li>
+                    <h4>Jumeirah Group</h4>
+                    <p><strong>Description:</strong> A global luxury hotel company and a member of Dubai Holding. Jumeirah Group develops and manages an iconic portfolio of hotels and resorts, including the Burj Al Arab, contributing to Dubai's luxury tourism and real estate landscape.</p>
+                    <p><strong>Managed by:</strong> Dubai Holding (Direct Subsidiary)</p>
+                </li>
+                <li>
+                    <h4>Nakheel Properties</h4>
+                    <p><strong>Description:</strong> As mentioned, Nakheel is a major government-owned developer of landmark projects like the Palm Jumeirah. While not a direct subsidiary of Dubai Holding, it is a key government-backed entity whose strategic vision aligns with Dubai's overall development goals, often working in close coordination with other government-affiliated bodies.</p>
+                    <p><strong>Managed by:</strong> Government of Dubai (Strategic Alignment with Dubai's Development Vision)</p>
+                </li>
+                <li>
+                    <h4>Emaar Properties</h4>
+                    <p><strong>Description:</strong> Emaar has significant government ownership via the Investment Corporation of Dubai (ICD). Although not a direct subsidiary of Dubai Holding, its operations and projects are deeply integrated into Dubai's strategic urban development plans, often collaborating on major government-backed initiatives.</p>
+                    <p><strong>Managed by:</strong> Significant Government Ownership/Ties (Strategic Alignment)</p>
+                </li>
+                <li>
+                    <h4>Union Properties</h4>
+                    <p><strong>Description:</strong> A prominent publicly listed real estate developer in Dubai. **Please note:** While Union Properties is a major developer in Dubai's real estate market, it is a publicly traded company and is **not a government-owned entity or a subsidiary of Dubai Holding**. Its inclusion here is based on its significant presence within the broader Dubai real estate ecosystem.</p>
+                    <p><strong>Managed by:</strong> Publicly Listed Company</p>
+                </li>
+            </ul>
+        </div>
+
+
+        <div class="home-section">
+            <h3>Main Private Developers</h3>
+            <ul>
+                <li>
+                    <h4>Damac Properties</h4>
+                    <p><strong>Description:</strong> A leading luxury real estate developer in the Middle East, known for its high-end residential, commercial, and leisure properties. Damac often collaborates with luxury brands like Versace and Cavalli for branded residences, with notable projects including Damac Hills and Akoya Oxygen.</p>
+                    <p><strong>Managed by:</strong> Hussain Sajwani (Chairman)</p>
+                </li>
+                <li>
+                    <h4>Azizi Developments</h4>
+                    <p><strong>Description:</strong> A prominent private developer with a focus on residential and commercial properties in prime locations across Dubai, including Al Furjan, Dubai Healthcare City, and Palm Jumeirah. Azizi is known for its diverse portfolio of apartments and community-centric living spaces.</p>
+                    <p><strong>Managed by:</strong> Farhad Azizi (CEO)</p>
+                </li>
+                <li>
+                    <h4>Binghatti Developers</h4>
+                    <p><strong>Description:</strong> Gaining significant recognition for its distinctive architectural designs, particularly its "hyper-towers" with unique balcony structures. Binghatti focuses on residential projects, offering a mix of apartments and townhouses in various Dubai communities, often emphasizing modern living and striking aesthetics.</p>
+                    <p><strong>Managed by:</strong> Muhammad Binghatti (CEO)</p>
+                </li>
+                <li>
+                    <h4>Select Group</h4>
+                    <p><strong>Description:</strong> A well-established real estate developer with a strong presence in Dubai Marina and Business Bay. Select Group is known for delivering high-quality residential and mixed-use projects, often focusing on waterfront living and premium amenities.</p>
+                    <p><strong>Managed by:</strong> Rahail Aslam (CEO)</p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="home-section">
+            <h3>DLD Forms: Understanding Key Agreements</h3>
+            <p>The Dubai Land Department (DLD) mandates specific forms to ensure transparency and legal clarity in real estate transactions. These forms are crucial for both buyers, sellers, and agents:</p>
+            <ul>
+                <li>
+                    <h4>Form A (Seller's Agreement)</h4>
+                    <p><strong>Purpose:</strong> This is an exclusive agreement between a property seller and a real estate agent. It grants the agent the exclusive right to market and sell the property for a specified period and price. It outlines the agent's commission, marketing strategy, and the seller's obligations.</p>
+                    <p><strong>Managed by:</strong> RERA (Real Estate Regulatory Agency) via the DLD system.</p>
+                </li>
+                <li>
+                    <h4>Form B (Buyer's Agreement)</h4>
+                    <p><strong>Purpose:</strong> This is an agreement between a buyer and their real estate agent. It outlines the terms under which the agent will assist the buyer in finding and purchasing a property, including the agent's commission (if applicable to the buyer) and the buyer's requirements.</p>
+                    <p><strong>Managed by:</strong> RERA via the DLD system.</p>
+                </li>
+                <li>
+                    <h4>Form F (Memorandum of Understanding - MOU)</h4>
+                    <p><strong>Purpose:</strong> This is a crucial agreement signed by the buyer, seller, and their respective agents (if any) once a deal has been agreed upon. It formalizes the terms of the sale, including the property details, price, payment schedule, handover date, and any special conditions. It acts as a pre-cursor to the final property transfer.</p>
+                    <p><strong>Managed by:</strong> RERA via the DLD system.</p>
+                </li>
+                <li>
+                    <h4>Other Important DLD Aspects:</h4>
+                    <ul>
+                        <li><strong>Ejari:</strong> Mandatory registration system for all tenancy contracts in Dubai, protecting the rights of landlords and tenants.</li>
+                        <li><strong>Oqood:</strong> Initial registration of off-plan property sales contracts, ensuring buyer protection.</li>
+                        <li><strong>Trust Accounts:</strong> DLD mandates that developers hold buyer payments in trust accounts to safeguard investments during off-plan construction.</li>
+                        <li><strong>Valuation Services:</strong> DLD provides official property valuation services for various purposes.</li>
+                    </ul>
+                    <p><strong>Managed by:</strong> Dubai Land Department (DLD)</p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="home-section">
+            <h3>Taxes Incurred by the Government in Dubai Real Estate</h3>
+            <p>While Dubai is known for its tax-friendly environment, there are specific government fees and charges associated with real estate transactions:</p>
+            <ul>
+                <li>
+                    <h4>DLD Transfer Fee (4%)</h4>
+                    <p><strong>Description:</strong> This is the most significant fee, typically 4% of the property's purchase price. It is usually paid by the buyer, although this can be negotiated between buyer and seller. It's a one-time fee paid upon property transfer.</p>
+                    <p><strong>Managed by:</strong> Dubai Land Department (DLD)</p>
+                </li>
+                <li>
+                    <h4>Mortgage Registration Fee (0.25% + AED 290)</h4>
+                    <p><strong>Description:</strong> If a property is purchased with a mortgage, a registration fee of 0.25% of the mortgage value (plus a fixed fee of AED 290) is paid to the DLD. This is typically paid by the buyer.</p>
+                    <p><strong>Managed by:</strong> Dubai Land Department (DLD)</p>
+                </li>
+                <li>
+                    <h4>VAT (Value Added Tax)</h4>
+                    <p><strong>Description:</strong> A 5% VAT applies to commercial property sales and leases. For residential properties, new residential properties are zero-rated for the first sale, while subsequent sales of residential properties are exempt from VAT. Real estate agent commissions are subject to 5% VAT.</p>
+                    <p><strong>Managed by:</strong> Federal Tax Authority (FTA), collected by businesses.</p>
+                </li>
+                <li>
+                    <h4>Service Charges / Community Fees</h4>
+                    <p><strong>Description:</strong> These are annual fees paid by property owners to the master developer or Owners Association for the maintenance and management of common areas, facilities, and infrastructure within a community. These are not taxes but mandatory fees.</p>
+                    <p><strong>Managed by:</strong> Master Developers / Owners Associations (regulated by RERA)</p>
+                </li>
+                <li>
+                    <h4>No Annual Property Tax</h4>
+                    <p><strong>Important Note:</strong> Unlike many other global cities, Dubai does not impose an annual property tax on owned real estate, which is a significant advantage for investors and homeowners.</p>
+                </li>
+            </ul>
+            <p><strong>Overall Management of Taxes:</strong> Dubai Land Department (DLD) and Federal Tax Authority (FTA)</p>
+        </div>
+
+        <div class="home-section">
+            <h3>Essential Rules and Regulations for Real Estate Agents in Dubai</h3>
+            <p>Real estate agents in Dubai must adhere to strict regulations set by the Real Estate Regulatory Agency (RERA), a branch of the DLD, to ensure professionalism, transparency, and consumer protection. Key regulations include:</p>
+            <ul>
+                <li>
+                    <h4>RERA Broker Card (License)</h4>
+                    <p><strong>Requirement:</strong> All real estate agents must possess a valid RERA-issued broker card (license). This requires completing specific training courses (like the RERA-approved Real Estate Brokerage Course) and passing an exam.</p>
+                    <p><strong>Managed by:</strong> RERA (Real Estate Regulatory Agency)</p>
+                </li>
+                <li>
+                    <h4>Exclusive Listing Agreements (Form A)</h4>
+                    <p><strong>Requirement:</strong> Agents must have a signed Form A (Seller's Agreement) with the property owner to market a property exclusively. Marketing without a valid Form A is illegal.</p>
+                    <p><strong>Managed by:</strong> RERA</p>
+                </li>
+                <li>
+                    <h4>Advertising Regulations</h4>
+                    <p><strong>Requirement:</strong> All property advertisements (online, print, billboards) must include a valid RERA permit number (e.g., "ORN" - Office Registration Number, and "BRN" - Broker Registration Number). Misleading advertising is strictly prohibited.</p>
+                    <p><strong>Managed by:</strong> RERA</p>
+                </li>
+                <li>
+                    <h4>Transparency and Disclosure</h4>
+                    <p><strong>Requirement:</strong> Agents must disclose all relevant information about a property to potential buyers, including any known defects or encumbrances. They must act in the best interest of their clients.</p>
+                    <p><strong>Managed by:</strong> RERA</p>
+                </li>
+                <li>
+                    <h4>Trust Account Usage</h4>
+                    <p><strong>Requirement:</strong> For off-plan properties, agents must ensure that buyer payments are directed to the developer's RERA-approved trust account, not directly to the developer or the agent's personal account.</p>
+                    <p><strong>Managed by:</strong> RERA</p>
+                </li>
+                <li>
+                    <h4>Anti-Money Laundering (AML) Compliance</h4>
+                    <p><strong>Requirement:</strong> Agents are obligated to comply with UAE's AML laws, including conducting due diligence on clients and reporting suspicious transactions to the relevant authorities.</p>
+                    <p><strong>Managed by:</strong> Financial Intelligence Department (FID) and RERA</p>
+                </li>
+                <li>
+                    <h4>Code of Ethics</h4>
+                    <p><strong>Requirement:</strong> Agents must adhere to a professional code of ethics, maintaining integrity, honesty, and fairness in all dealings.</p>
+                    <p><strong>Managed by:</strong> RERA</p>
+                </li>
+            </ul>
+            <p><strong>Overall Management of Agent Regulations:</strong> Real Estate Regulatory Agency (RERA)</p>
+        </div>
+    </div>
+
+    <div class="page-container" id="highways-page">
         <h1>Dubai Main Roads Map</h1>
         <div class="map">
             <div class="road" id="e11-road-section">
@@ -248,7 +616,6 @@
         </div>
     </div>
 
-    <!-- The info panel, now outside the main-container -->
     <div class="info-panel" id="info-panel">
         <div class="panel-content">
             <span class="close" onclick="closePanel()">×</span>
@@ -365,10 +732,36 @@
             ]
         };
 
+        let currentPageId = ''; // To keep track of the currently active page
+
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page-container').forEach(page => {
+                page.classList.remove('active-page');
+            });
+
+            // Show the requested page
+            const activePage = document.getElementById(pageId);
+            if (activePage) {
+                activePage.classList.add('active-page');
+                currentPageId = pageId; // Update current page ID
+
+                // If switching away from highways, ensure all locations are hidden
+                if (pageId !== 'highways-page') {
+                    document.querySelectorAll('.locations.is-visible').forEach(openLocations => {
+                        openLocations.classList.remove('is-visible');
+                        openLocations.innerHTML = ''; // Clear content when hiding
+                    });
+                }
+            }
+
+            // Close the info panel if open
+            closePanel();
+        }
+
         function createLocations(roadId, data) {
             const container = document.getElementById(`${roadId}-locations`);
-            // Clear existing locations before re-creating to prevent duplicates on re-open
-            container.innerHTML = '';
+            container.innerHTML = ''; // Clear existing locations before re-creating
             data.forEach((loc, index) => {
                 const div = document.createElement("div");
                 div.className = "location";
@@ -386,7 +779,8 @@
         function showInfo(location, element) {
             const infoPanel = document.getElementById("info-panel");
             const infoContent = document.getElementById("info-content");
-            const mainContainer = document.getElementById("main-container");
+            // Apply blur to the currently active page container
+            const activePageElement = document.getElementById(currentPageId);
 
             // Remove active class from all locations
             document.querySelectorAll(".location").forEach(el => el.classList.remove("active"));
@@ -403,15 +797,19 @@
                 <p>${location.famousFor}</p>
             `;
             infoPanel.classList.add("active");
-            mainContainer.classList.add("blurred-content"); // Apply blur
+            if (activePageElement) {
+                activePageElement.classList.add("blurred-content"); // Apply blur to the active page
+            }
         }
 
         function closePanel() {
             const infoPanel = document.getElementById("info-panel");
-            const mainContainer = document.getElementById("main-container");
+            const activePageElement = document.getElementById(currentPageId); // Get the currently active page
 
             infoPanel.classList.remove("active");
-            mainContainer.classList.remove("blurred-content"); // Remove blur
+            if (activePageElement) {
+                activePageElement.classList.remove("blurred-content"); // Remove blur from the active page
+            }
             document.querySelectorAll(".location").forEach(el => el.classList.remove("active"));
         }
 
@@ -427,7 +825,8 @@
             if (infoPanel.classList.contains('active') &&
                 !panelContent.contains(clickedElement) &&
                 !clickedElement.classList.contains('close') &&
-                !clickedElement.closest('.road')) { // Check if the clicked element or its parent is a .road
+                !clickedElement.closest('.road') &&
+                !clickedElement.classList.contains('nav-button')) { /* Do not close if clicking a nav button */
                 closePanel();
             }
         });
@@ -464,9 +863,10 @@
             });
         });
 
-        // Initial setup: No locations are visible by default.
-        // The createLocations function will be called when a road is clicked.
+        // Initial page load: Show the home page
+        document.addEventListener('DOMContentLoaded', () => {
+            showPage('home-page');
+        });
     </script>
 </body>
 </html>
-
