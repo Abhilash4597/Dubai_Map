@@ -7,7 +7,7 @@
     <link rel="icon" type="image/x-icon" href="https://wallpapers.com/images/hd/exceptional-dubai-z03qow0d0d3yuumg.jpg">
     <style>
         /* Import Google Font 'Inter' */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+        @import url('https://fonts.com/css2?family=Inter:wght@400;600;800&display=swap');
 
         html, body {
             height: 100%;
@@ -497,10 +497,19 @@
             font-size: 1.1rem;
             margin-bottom: 10px;
         }
-        .ai-insights-section p {
+        .ai-insights-section #ai-insights-text {
             font-size: 0.95rem;
             color: #46637d;
             line-height: 1.5;
+            padding-left: 15px; /* Indent for bullet points */
+        }
+        .ai-insights-section #ai-insights-text ul {
+            list-style-type: disc; /* Ensure disc bullet points */
+            margin-left: 20px;
+            padding-left: 0;
+        }
+        .ai-insights-section #ai-insights-text li {
+            margin-bottom: 5px;
         }
         .generate-insights-btn {
             background: linear-gradient(90deg, #f39c12 0%, #e67e22 100%); /* Orange gradient */
@@ -525,6 +534,85 @@
             font-style: italic;
             color: #7f8c8d;
             font-size: 0.9rem;
+        }
+
+        /* New styles for AI Search on Home Page */
+        .ai-home-search-section {
+            width: 100%;
+            max-width: 850px;
+            text-align: center;
+            margin-bottom: 42px;
+            padding: 22px 20px 20px 30px;
+            background: linear-gradient(111deg,#f0f8ff 50%, #e8f8ff 100%);
+            border-radius: 1rem;
+            box-shadow: 0 4px 13px rgba(52,152,219,0.06);
+        }
+        .ai-home-search-section h3 {
+            font-size: 1.8rem;
+            color: #1c4366;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #a2d9ce;
+            padding-bottom: 9px;
+            font-weight: 700;
+        }
+        .ai-home-search-input-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+            flex-wrap: wrap; /* Allow wrapping on small screens */
+        }
+        .ai-home-search-input {
+            flex-grow: 1;
+            max-width: 500px;
+            padding: 12px 20px;
+            border-radius: 0.75rem;
+            border: 1px solid #a2d9ce;
+            font-size: 1rem;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+            transition: border-color 0.2s;
+        }
+        .ai-home-search-input:focus {
+            outline: none;
+            border-color: #48c6ef;
+            box-shadow: 0 0 0 3px rgba(72,198,239,0.2);
+        }
+        .ai-home-search-btn {
+            background: linear-gradient(90deg, #3498db 0%, #2ecc71 100%);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+            box-shadow: 0 3px 8px rgba(52, 152, 219, 0.3);
+        }
+        .ai-home-search-btn:hover {
+            background: linear-gradient(90deg, #2ecc71 0%, #3498db 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(52, 152, 219, 0.4);
+        }
+        #ai-home-search-results {
+            margin-top: 25px;
+            text-align: left;
+            padding: 15px 20px;
+            background-color: #f8faff;
+            border-radius: 0.8rem;
+            border: 1px solid #e0f0ff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            min-height: 80px; /* Provide some space */
+        }
+        #ai-home-search-results ul {
+            list-style-type: disc;
+            margin-left: 25px;
+            padding-left: 0;
+            color: #305871;
+        }
+        #ai-home-search-results li {
+            margin-bottom: 8px;
+            line-height: 1.5;
         }
 
 
@@ -559,6 +647,19 @@
             }
             .info-panel.active .panel-content { transform: translateY(0);}
             .close { top:15px; left:20px; right:auto;}
+
+            /* Responsive for AI Home Search */
+            .ai-home-search-section {
+                padding: 15px;
+            }
+            .ai-home-search-input-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .ai-home-search-input, .ai-home-search-btn {
+                width: 100%;
+                max-width: none;
+            }
         }
     </style>
 </head>
@@ -620,6 +721,20 @@
         <h2 style="margin-bottom:0;">Welcome to Dubai Real Estate Explorer</h2>
         <p>Your comprehensive guide to Dubai's dynamic real estate landscape, major highways, and key locations.</p>
 
+        <!-- New AI Search Section -->
+        <div class="ai-home-search-section">
+            <h3>AI Information Search (UAE)</h3>
+            <p>Ask anything about the UAE's real estate, history, or general facts!</p>
+            <div class="ai-home-search-input-group">
+                <input type="text" id="ai-search-input" class="ai-home-search-input" placeholder="e.g., 'What are the main tourist attractions in Abu Dhabi?'" aria-label="Search UAE information">
+                <button class="ai-home-search-btn" onclick="searchDubaiInfo()">🔍 Search</button>
+            </div>
+            <div id="ai-home-search-results">
+                <!-- AI search results will be displayed here -->
+            </div>
+        </div>
+        <!-- End AI Search Section -->
+
         <div class="home-section" id="about-dubai">
             <h3>About Dubai</h3>
             <p>Dubai is a global city and business hub of the Middle East. It is also a major transport hub for passengers and cargo. Oil revenue helped accelerate the development of the city, but Dubai's economy is now built on tourism, trade, real estate, and financial services. It is known for its luxurious architecture, vibrant nightlife, and ambitious construction projects, offering a unique blend of traditional Arabian culture and modern cosmopolitan living.</p>
@@ -641,7 +756,7 @@
                 <li>
                     <h4>Emaar Properties</h4>
                     <p><strong>Description:</strong> One of the largest and most prestigious real estate developers globally, known for iconic projects like the Burj Khalifa and The Dubai Mall. Emaar has significant government ownership (via the Investment Corporation of Dubai, ICD) and plays a pivotal role in shaping Dubai's urban landscape.</p>
-                    <p><strong>Managed by:</strong> Significant government ownership/ties (via ICD)</p>
+                    <p><strong>Managed by:</b> Significant government ownership/ties (via ICD)</p>
                 </li>
                 <li>
                     <h4>Dubai South</h4>
@@ -673,7 +788,7 @@
                 <li>
                     <h4>TECOM Group</h4>
                     <p><strong>Description:</strong> While primarily managing business parks and free zones (like Dubai Media City, Dubai Internet City, Dubai Knowledge Park), TECOM Group, a member of Dubai Holding, also develops and manages significant commercial and some residential real estate within these clusters.</p>
-                    <p><strong>Managed by:</strong> Dubai Holding (Direct Subsidiary)</p>
+                    <p><strong>Managed by::</strong> Dubai Holding (Direct Subsidiary)</p>
                 </li>
                 <li>
                     <h4>Jumeirah Group</h4>
@@ -688,7 +803,7 @@
                 <li>
                     <h4>Emaar Properties</h4>
                     <p><strong>Description:</strong> Emaar has significant government ownership via the Investment Corporation of Dubai (ICD). Although not a direct subsidiary of Dubai Holding, its operations and projects are deeply integrated into Dubai's strategic urban development plans, often collaborating on major government-backed initiatives.</p>
-                    <p><strong>Managed by:</strong> Significant Government Ownership/Ties (Strategic Alignment)</p>
+                    <p><strong>Managed by:</b> Significant Government Ownership/Ties (Strategic Alignment)</p>
                 </li>
                 <li>
                     <h4>Union Properties</h4>
@@ -715,7 +830,7 @@
                 <li>
                     <h4>Binghatti Developers</h4>
                     <p><strong>Description:</strong> Gaining significant recognition for its distinctive architectural designs, particularly its "hyper-towers" with unique balcony structures. Binghatti focuses on residential projects, offering a mix of apartments and townhouses in various Dubai communities, often emphasizing modern living and striking aesthetics.</p>
-                    <p><strong>Managed by:</strong> Muhammad Binghatti (CEO)</p>
+                    <p><strong>Managed by::</strong> Muhammad Binghatti (CEO)</p>
                 </li>
                 <li>
                     <h4>Select Group</h4>
@@ -748,7 +863,8 @@
                     <h4>Other Important DLD Aspects:</h4>
                     <ul>
                         <li><strong>Ejari:</strong> Mandatory registration system for all tenancy contracts in Dubai, protecting the rights of landlords and tenants.</li>
-                        <li><strong>Oqood:</strong> Initial registration of off-plan property sales contracts, ensuring buyer protection.</li>
+                        <li><strong>Oqood:
+                            Initial registration of off-plan property sales contracts, ensuring buyer protection.</strong></li>
                         <li><strong>Trust Accounts:</strong> DLD mandates that developers hold buyer payments in trust accounts to safeguard investments during off-plan construction.</li>
                         <li><strong>Valuation Services:</strong> DLD provides official property valuation services for various purposes.</li>
                     </ul>
@@ -764,7 +880,7 @@
                 <li>
                     <h4>DLD Transfer Fee (4%)</h4>
                     <p><strong>Description:</strong> This is the most significant fee, typically 4% of the property's purchase price. It is usually paid by the buyer, although this can be negotiated between buyer and seller. It's a one-time fee paid upon property transfer.</p>
-                    <p><strong>Managed by:</strong> Dubai Land Department (DLD)</p>
+                    <p><strong>Managed by:</b> Dubai Land Department (DLD)</p>
                 </li>
                 <li>
                     <h4>Mortgage Registration Fee (0.25% + AED 290)</h4>
@@ -774,12 +890,12 @@
                 <li>
                     <h4>VAT (Value Added Tax)</h4>
                     <p><strong>Description:</strong> A 5% VAT applies to commercial property sales and leases. For residential properties, new residential properties are zero-rated for the first sale, while subsequent sales of residential properties are exempt from VAT. Real estate agent commissions are subject to 5% VAT.</p>
-                    <p><strong>Managed by:</strong> Federal Tax Authority (FTA), collected by businesses.</p>
+                    <p><strong>Managed by:</b> Federal Tax Authority (FTA), collected by businesses.</p>
                 </li>
                 <li>
                     <h4>Service Charges / Community Fees</h4>
                     <p><strong>Description:</strong> These are annual fees paid by property owners to the master developer or Owners Association for the maintenance and management of common areas, facilities, and infrastructure within a community. These are not taxes but mandatory fees.</p>
-                    <p><strong>Managed by:</strong> Master Developers / Owners Associations (regulated by RERA)</p>
+                    <p><strong>Managed by:</b> Master Developers / Owners Associations (regulated by RERA)</p>
                 </li>
                 <li>
                     <h4>No Annual Property Tax</h4>
@@ -796,7 +912,7 @@
                 <li>
                     <h4>RERA Broker Card (License)</h4>
                     <p><strong>Requirement:</strong> All real estate agents must possess a valid RERA-issued broker card (license). This requires completing specific training courses (like the RERA-approved Real Estate Brokerage Course) and passing an exam.</p>
-                    <p><strong>Managed by:</strong> RERA (Real Estate Regulatory Agency)</p>
+                    <p><strong>Managed by:</b> RERA</p>
                 </li>
                 <li>
                     <h4>Exclusive Listing Agreements (Form A)</h4>
@@ -810,7 +926,7 @@
                 </li>
                 <li>
                     <h4>Transparency and Disclosure</h4>
-                    <p><strong>Requirement:</strong> Agents must disclose all relevant information about a property to potential buyers, including any known defects or encumbrances. They must act in the best interest of their clients.</p>
+                    <p><strong>Requirement:</b> Agents must disclose all relevant information about a property to potential buyers, including any known defects or encumbrances. They must act in the best interest of their clients.</p>
                     <p><strong>Managed by:</strong> RERA</p>
                 </li>
                 <li>
@@ -826,7 +942,7 @@
                 <li>
                     <h4>Code of Ethics</h4>
                     <p><strong>Requirement:</strong> Agents must adhere to a professional code of ethics, maintaining integrity, honesty, and fairness in all dealings.</p>
-                    <p><strong>Managed by:</strong> RERA</p>
+                    <p><strong>Managed by:</b> RERA</p>
                 </li>
             </ul>
             <p><strong>Overall Management of Agent Regulations:</strong> Real Estate Regulatory Agency (RERA)</p>
@@ -988,6 +1104,7 @@
             "Dubai is a city where dreams are built and realized."
         ];
         function randomDidYouKnow() {
+            // Corrected variable name from didYouKnownFacts to didYouKnowFacts
             document.getElementById('didYouKnowText').innerHTML =
                 didYouKnowFacts[Math.floor(Math.random() * didYouKnowFacts.length)];
         }
@@ -1021,109 +1138,109 @@
         // ----- YOUR EXISTING JS DATA -----
         const locationsData = {
             e11: [
-                { id: "jebel-ali-free-zone", name: "Jebel Ali Free Zone (JAFZA)", developer: "DP World", manager: "DP World (Jafza)", famousFor: "One of the world's largest free zones, a global industrial and logistics hub." },
-                { id: "palm-jebel-ali", name: "Palm Jebel Ali", developer: "Nakheel Properties", manager: "Nakheel Properties", famousFor: "An upcoming iconic palm-shaped island development, currently undergoing redevelopment." },
-                { id: "jebel-ali-port", name: "Jebel Ali Port", developer: "DP World", manager: "DP World", famousFor: "The largest man-made harbor in the world and the busiest port in the Middle East." },
-                { id: "ibn-battuta", name: "Ibn Battuta Mall", developer: "Nakheel Properties", manager: "Nakheel Properties", famousFor: "A themed shopping mall inspired by the travels of explorer Ibn Battuta, known for its unique architecture." },
-                { id: "jumeirah-lake-towers-jlt", name: "Jumeirah Lake Towers (JLT)", developer: "DMCC (Dubai Multi Commodities Centre)", manager: "DMCC and various property management companies.", famousFor: "A vibrant mixed-use high-rise community built around artificial lakes, popular for residential and commercial spaces." },
-                { id: "dubai-marina", name: "Dubai Marina", developer: "Emaar Properties", manager: "Emaar Properties and various community management associations.", famousFor: "A premium waterfront living destination with skyscrapers, luxury yachts, and a bustling promenade." },
-                { id: "bluewaters-island", name: "Bluewaters Island", developer: "Meraas (now Dubai Holding)", manager: "Dubai Holding", famousFor: "Home to Ain Dubai (the world's largest observation wheel) and luxury beachfront residences, dining, and entertainment." },
-                { id: "jbr", name: "Jumeirah Beach Residence (JBR)", developer: "Dubai Properties", manager: "Dubai Properties and various community management associations.", famousFor: "A popular beachfront residential and leisure destination with a vibrant walk, restaurants, and retail." },
-                { id: "princess-tower", name: "Princess Tower", developer: "Tameer Holding Investment", manager: "Various property management companies.", famousFor: "Once the world's tallest residential building, offering panoramic views of Dubai Marina and Palm Jumeirah." },
-                { id: "dubai-harbour", name: "Dubai Harbour", developer: "Meraas (now Dubai Holding)", manager: "Dubai Holding", famousFor: "A new waterfront destination featuring a state-of-art cruise terminal, luxury residences, and a large marina." },
-                { id: "emaar-beachfront", name: "Emaar Beachfront", developer: "Emaar Properties", manager: "Emaar Properties", famousFor: "An exclusive residential community offering luxury apartments with direct beach access and stunning views of the Arabian Gulf." },
-                { id: "dubai-media-city", name: "Dubai Media City", developer: "TECOM Group (part of Dubai Holding)", manager: "TECOM Group", famousFor: "A free zone dedicated to media and advertising companies, a hub for regional and international media organizations." },
-                { id: "dubai-internet-city", name: "Dubai Internet City", developer: "TECOM Group (part of Dubai Holding)", manager: "TECOM Group", famousFor: "The Middle East's largest information and communications technology (ICT) free zone, home to global tech giants." },
-                { id: "dubai-knowledge-park", name: "Dubai Knowledge Park", developer: "TECOM Group (part of Dubai Holding)", manager: "TECOM Group", famousFor: "A free zone dedicated to human resource management, learning, and educational institutions." },
-                { id: "palm-jumeirah", name: "Palm Jumeirah", developer: "Nakheel Properties", manager: "Nakheel Properties and various community management associations.", famousFor: "An iconic man-made archipelago, famous for its luxury villas, hotels (like Atlantis), and high-end lifestyle." },
-                { id: "flamingos-villas", name: "Flamingos Villas", developer: "R Holdings", manager: "R Holdings and community management.", famousFor: "A residential villa community within Jumeirah Village Circle/Triangle area." },
-                { id: "al-nakheel-villas", name: "Al Nakheel Villas", developer: "Nakheel Properties", manager: "Nakheel Properties and community management.", famousFor: "A residential community with villas, often associated with Nakheel developments." },
-                { id: "al-safouh", name: "Al Safouh", developer: "Various developers", manager: "Dubai Municipality / Individual property owners", famousFor: "A coastal area with residential and commercial properties, close to major attractions and the beach." },
-                { id: "mall-of-emirates", name: "Mall of the Emirates", developer: "Majid Al Futtaim Properties", manager: "Majid Al Futtaim Properties", famousFor: "A world-renowned shopping mall, famous for Ski Dubai (indoor ski resort) and luxury brands." },
-                { id: "umm-al-sheif", name: "Umm Al Sheif", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A quiet residential area known for its large villas and proximity to Jumeirah and Al Barsha." },
-                { id: "umm-suqeim-3", name: "Umm Suqeim 3", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A residential area known for its beach access, proximity to Burj Al Arab, and family-friendly environment." },
-                { id: "burj-al-arab", name: "Burj Al Arab", developer: "Jumeirah Group", manager: "Jumeirah Group", famousFor: "An iconic sail-shaped luxury hotel, often referred to as a '7-star' hotel, a symbol of Dubai." },
-                { id: "umm-suqeim-2", name: "Umm Suqeim 2", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "Another residential area within Umm Suqeim, known for its villas and proximity to Kite Beach." },
-                { id: "al-safa-2", name: "Al Safa 2", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A residential community with villas, offering good connectivity and proximity to Safa Park." },
-                { id: "umm-suqeim-1", name: "Umm Suqeim 1", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "The oldest part of Umm Suqeim, known for its traditional villas and direct beach access." },
-                { id: "al-safa", name: "Al Safa", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A well-established residential area with villas and apartments, known for Safa Park and its central location." },
-                { id: "jumeirah-3", name: "Jumeirah 3", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A prime residential area with villas, offering beach access and a relaxed lifestyle." },
-                { id: "safa-park", name: "Safa Park", developer: "Dubai Municipal Corporation", manager: "Dubai Municipal Corporation", famousFor: "A large urban park, popular for recreation, picnics, and its green spaces." },
-                { id: "sunset-mall", name: "Sunset Mall", developer: "Wasl Properties", manager: "Wasl Properties", famousFor: "A community mall in Jumeirah, offering retail, dining, and entertainment options." },
-                { id: "the-world-island", name: "The World Island", developer: "Nakheel", manager: "Kleindienst Group (for The Heart of Europe)", famousFor: "An artificial archipelago of small islands constructed in the shape of a world map, with some islands developed into luxury resorts." },
-                { id: "the-private-island-sweden", name: "The Private Island (Sweden Island)", developer: "The Kleindienst Group", manager: "The Kleindienst Group", famousFor: "Part of The Heart of Europe development on The World Islands, offering luxury villas with unique designs." },
-                { id: "dubai-canal", name: "Dubai Canal", developer: "RTA (Roads and Transport Authority)", manager: "RTA", famousFor: "An artificial waterway extending from Business Bay to the Arabian Gulf, transforming parts of Dubai into a waterfront city." },
-                { id: "al-wasl", name: "Al Wasl", developer: "Wasl Properties", manager: "Wasl Properties", famousFor: "A residential area known for its villas, schools, and proximity to Jumeirah and Sheikh Zayed Road." },
-                { id: "jumeirah-2", name: "Jumeirah 2", developer: "Wasl Properties", manager: "Wasl Properties", famousFor: "A residential area with villas, offering beach access and a mix of traditional and modern properties." },
-                { id: "jumeirah-bay-islands", name: "Jumeirah Bay Islands", developer: "Meraas (now Dubai Holding)", manager: "Dubai Holding", famousFor: "A luxury island destination featuring Bulgari Resort & Residences and high-end properties." },
-                { id: "bulgan-island", name: "Bulgari Island", developer: "Meraas (now Dubai Holding)", manager: "Dubai Holding", famousFor: "Home to the ultra-luxury Bulgari Resort & Residences, part of Jumeirah Bay Islands." },
-                { id: "al-satwa", name: "Al Satwa", developer: "Wasl Properties (some parts by Dubai Municipality)", manager: "Wasl Properties / Dubai Municipality", famousFor: "A vibrant, multicultural residential and commercial area known for its diverse shops, tailors, and restaurants." },
-                { id: "al-badaa", name: "Al Bada'a", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A residential area located between Jumeirah and Al Satwa, offering a mix of villas and apartments." },
-                { id: "jumeirah-1", name: "Jumeirah 1", developer: "Wasl Properties", manager: "Wasl Properties", famousFor: "The original Jumeirah district, known for its traditional villas, beach access, and proximity to La Mer." },
-                { id: "la-mer", name: "La Mer", developer: "Meraas (now Dubai Holding)", manager: "Dubai Holding", famousFor: "A popular beachfront destination with trendy restaurants, cafes, retail, and recreational facilities." },
-                { id: "al-jaffiliya", name: "Al Jaffiliya", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A residential and administrative area, home to the General Directorate of Residency and Foreigners Affairs (GDRFA)." },
-                { id: "al-hudaiba", name: "Al Hudaiba", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A residential area located near Port Rashid and the coast, offering a mix of villas and apartments." },
-                { id: "al-mina", name: "Al Mina", developer: "DP World", manager: "DP World (Ports, Customs & Free Zone Corporation)", famousFor: "A significant port area in Dubai, crucial for maritime trade and logistics, part of the larger port operations." },
-                { id: "dubai-dry-docks", name: "Dubai Dry Docks", developer: "DP World", manager: "DP World", famousFor: "One of the largest ship repair yards in the Middle East, offering comprehensive maritime services." },
-                { id: "zabeel-park", name: "Zabeel Park", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A large public park in Dubai, known for its green spaces, jogging tracks, and the iconic Dubai Frame." },
-                { id: "umm-hurair-2", name: "Umm Hurair 2", developer: "Tatweer / Dubai Holding", manager: "Tatweer / Dubai Holding", famousFor: "A mixed-use area, home to Dubai Healthcare City and various residential and commercial developments." },
-                { id: "mohammed-bin-rashid-university", name: "Mohammed Bin Rashid University of Medicine and Health Sciences (MBRU)", developer: "DHCA (Dubai Healthcare City Authority)", manager: "DHCA", famousFor: "A leading academic institution focusing on health sciences education and research." },
-                { id: "sofitel-dubai", name: "Sofitel Dubai Downtown", developer: "Wafi Group (MKM Holding)", manager: "Wafi Group (MKM Holding)", famousFor: "A luxury hotel offering direct access to The Dubai Mall and stunning views of Burj Khalifa." },
-                { id: "wafi-mall", name: "Wafi Mall", developer: "Wafi Group (MKM Holding)", manager: "Wafi Group (MKM Holding)", famousFor: "A distinctive shopping mall with an Egyptian theme, known for its unique architecture and luxury boutiques." },
-                { id: "oud-metha", name: "Oud Metha", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A well-established residential and commercial area known for its schools, hospitals, and a mix of apartments and villas." },
-                { id: "al-karama", name: "Al Karama", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A bustling residential and commercial district popular for its affordable housing, diverse dining options, and numerous shops." },
-                { id: "al-mankhool", name: "Al Mankhool", developer: "Dubai Municipality", manager: "Dubai Municipality / Individual property owners", famousFor: "A residential area in Bur Dubai, known for its apartments, hotels, and proximity to shopping malls and historical sites." },
-                { id: "bur-juman", name: "BurJuman", developer: "Al Ghurair Group", manager: "Al Ghurair Group", famousFor: "One of Dubai's oldest shopping malls, known for its luxury brands and family-friendly atmosphere." },
-                { id: "al-raffa", name: "Al Raffa", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A residential and commercial area in Bur Dubai, known for its mix of apartments, shops, and restaurants." },
-                { id: "extension-of-al-mina", name: "Extension of Al Mina", developer: "DP World", manager: "DP World", famousFor: "An expansion of the Al Mina port area, enhancing its capabilities for cargo and logistics." },
-                { id: "dubai-customs", name: "Dubai Customs", developer: "Government of Dubai", manager: "Government of Dubai", famousFor: "The government authority responsible for customs operations, trade facilitation, and border security." },
-                { id: "port-rashid-passenger-terminal", name: "Port Rashid Passenger Terminal", developer: "DP World", manager: "DP World", famousFor: "A major cruise terminal serving international cruise lines and passengers visiting Dubai." },
-                { id: "port-rashid", name: "Port Rashid", developer: "Dubai Government (1970), later Nakheel with EMAAR & DP World", manager: "DP World", famousFor: "A historic commercial port now being redeveloped into a cruise tourism destination and waterfront community." },
-                { id: "dubai-maritime-city", name: "Dubai Maritime City", developer: "Dubai Maritime City LLC (a subsidiary of DP World)", manager: "Dubai Maritime City LLC", famousFor: "A purpose-built maritime hub designed to support the maritime industry, offering commercial and industrial facilities." },
-                { id: "deira", name: "Deira", developer: "Dubai Municipality", manager: "Dubai Municipality (some areas by Wasl Group)", famousFor: "The historic heart of Dubai, known for its traditional souks (gold, spice, perfume), Dhow Wharfage, and vibrant trading." },
-                { id: "dubai-islands", name: "Dubai Islands", developer: "Nakheel", manager: "Nakheel", famousFor: "A new waterfront masterplan by Nakheel, transforming the former Deira Islands into a prime residential and tourism destination." },
-                { id: "al-qusais", name: "Al Qusais", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A large residential and industrial area, known for its affordable housing and proximity to Dubai International Airport." },
-                { id: "dubai-international-airport", name: "Dubai International Airport (DXB)", developer: "Dubai Airports", manager: "Dubai Airports", famousFor: "One of the world's busiest airports by international passenger traffic, a major global aviation hub." },
-                { id: "al-twar", name: "Al Twar", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A well-established residential area with villas, known for its quiet environment and family-friendly amenities." },
-                { id: "al-nahda", name: "Al Nahda", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A residential area bordering Sharjah, offering affordable housing options and good connectivity." },
-                { id: "towards-sharjah-e11", name: "Towards Sharjah", developer: "RTA", manager: "RTA", famousFor: "The continuation of E11 leading towards the emirate of Sharjah." }
+                { id: "jebel-ali-free-zone", name: "Jebel Ali Free Zone (JAFZA)", developer: "DP World", manager: "DP World (Jafza)", famousFor: "One of the world's largest free zones, a global industrial and logistics hub.", perSqftRate: "AED 800", percentageGrowth: "5%" },
+                { id: "palm-jebel-ali", name: "Palm Jebel Ali", developer: "Nakheel Properties", manager: "Nakheel Properties", famousFor: "An upcoming iconic palm-shaped island development, currently undergoing redevelopment.", perSqftRate: "AED 1500", percentageGrowth: "12%" },
+                { id: "jebel-ali-port", name: "Jebel Ali Port", developer: "DP World", manager: "DP World", famousFor: "The largest man-made harbor in the world and the busiest port in the Middle East.", perSqftRate: "N/A (Industrial)", percentageGrowth: "N/A" },
+                { id: "ibn-battuta", name: "Ibn Battuta Mall", developer: "Nakheel Properties", manager: "Nakheel Properties", famousFor: "A themed shopping mall inspired by the travels of explorer Ibn Battuta, known for its unique architecture.", perSqftRate: "AED 950", percentageGrowth: "4%" },
+                { id: "jumeirah-lake-towers-jlt", name: "Jumeirah Lake Towers (JLT)", developer: "DMCC (Dubai Multi Commodities Centre)", manager: "DMCC and various property management companies.", famousFor: "A vibrant mixed-use high-rise community built around artificial lakes, popular for residential and commercial spaces.", perSqftRate: "AED 1100", percentageGrowth: "7%" },
+                { id: "dubai-marina", name: "Dubai Marina", developer: "Emaar Properties", manager: "Emaar Properties and various community management associations.", famousFor: "A premium waterfront living destination with skyscrapers, luxury yachts, and a bustling promenade.", perSqftRate: "AED 1600", percentageGrowth: "9%" },
+                { id: "bluewaters-island", name: "Bluewaters Island", developer: "Meraas (now Dubai Holding)", manager: "Dubai Holding", famousFor: "Home to Ain Dubai (the world's largest observation wheel) and luxury beachfront residences, dining, and entertainment.", perSqftRate: "AED 2200", percentageGrowth: "15%" },
+                { id: "jbr", name: "Jumeirah Beach Residence (JBR)", developer: "Dubai Properties", manager: "Dubai Properties and various community management associations.", famousFor: "A popular beachfront residential and leisure destination with a vibrant walk, restaurants, and retail.", perSqftRate: "AED 1450", percentageGrowth: "8%" },
+                { id: "princess-tower", name: "Princess Tower", developer: "Tameer Holding Investment", manager: "Various property management companies.", famousFor: "Once the world's tallest residential building, offering panoramic views of Dubai Marina and Palm Jumeirah.", perSqftRate: "AED 1300", percentageGrowth: "6%" },
+                { id: "dubai-harbour", name: "Dubai Harbour", developer: "Meraas (now Dubai Holding)", manager: "Dubai Holding", famousFor: "A new waterfront destination featuring a state-of-art cruise terminal, luxury residences, and a large marina.", perSqftRate: "AED 2000", percentageGrowth: "11%" },
+                { id: "emaar-beachfront", name: "Emaar Beachfront", developer: "Emaar Properties", manager: "Emaar Properties", famousFor: "An exclusive residential community offering luxury apartments with direct beach access and stunning views of the Arabian Gulf.", perSqftRate: "AED 2500", percentageGrowth: "18%" },
+                { id: "dubai-media-city", name: "Dubai Media City", developer: "TECOM Group (part of Dubai Holding)", manager: "TECOM Group", famousFor: "A free zone dedicated to media and advertising companies, a hub for regional and international media organizations.", perSqftRate: "AED 1200", percentageGrowth: "7%" },
+                { id: "dubai-internet-city", name: "Dubai Internet City", developer: "TECOM Group (part of Dubai Holding)", manager: "TECOM Group", famousFor: "The Middle East's largest information and communications technology (ICT) free zone, home to global tech giants.", perSqftRate: "AED 1150", percentageGrowth: "6%" },
+                { id: "dubai-knowledge-park", name: "Dubai Knowledge Park", developer: "TECOM Group (part of Dubai Holding)", manager: "TECOM Group", famousFor: "A free zone dedicated to human resource management, learning, and educational institutions.", perSqftRate: "AED 1050", percentageGrowth: "5%" },
+                { id: "palm-jumeirah", name: "Palm Jumeirah", developer: "Nakheel Properties", manager: "Nakheel Properties and various community management associations.", famousFor: "An iconic man-made archipelago, famous for its luxury villas, hotels (like Atlantis), and high-end lifestyle.", perSqftRate: "AED 3000", percentageGrowth: "20%" },
+                { id: "flamingos-villas", name: "Flamingos Villas", developer: "R Holdings", manager: "R Holdings and community management.", famousFor: "A residential villa community within Jumeirah Village Circle/Triangle area.", perSqftRate: "AED 900", percentageGrowth: "4%" },
+                { id: "al-nakheel-villas", name: "Al Nakheel Villas", developer: "Nakheel Properties", manager: "Nakheel Properties and community management.", famousFor: "A residential community with villas, often associated with Nakheel developments.", perSqftRate: "AED 850", percentageGrowth: "3%" },
+                { id: "al-safouh", name: "Al Safouh", developer: "Various developers", manager: "Dubai Municipality / Individual property owners", famousFor: "A coastal area with residential and commercial properties, close to major attractions and the beach.", perSqftRate: "AED 1350", percentageGrowth: "7%" },
+                { id: "mall-of-emirates", name: "Mall of the Emirates", developer: "Majid Al Futtaim Properties", manager: "Majid Al Futtaim Properties", famousFor: "A world-renowned shopping mall, famous for Ski Dubai (indoor ski resort) and luxury brands.", perSqftRate: "N/A (Retail)", percentageGrowth: "N/A" },
+                { id: "umm-al-sheif", name: "Umm Al Sheif", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A quiet residential area known for its large villas and proximity to Jumeirah and Al Barsha.", perSqftRate: "AED 1100", percentageGrowth: "6%" },
+                { id: "umm-suqeim-3", name: "Umm Suqeim 3", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A residential area known for its beach access, proximity to Burj Al Arab, and family-friendly environment.", perSqftRate: "AED 1250", percentageGrowth: "8%" },
+                { id: "burj-al-arab", name: "Burj Al Arab", developer: "Jumeirah Group", manager: "Jumeirah Group", famousFor: "An iconic sail-shaped luxury hotel, often referred to as a '7-star' hotel, a symbol of Dubai.", perSqftRate: "N/A (Hotel)", percentageGrowth: "N/A" },
+                { id: "umm-suqeim-2", name: "Umm Suqeim 2", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "Another residential area within Umm Suqeim, known for its villas and proximity to Kite Beach.", perSqftRate: "AED 1200", percentageGrowth: "7%" },
+                { id: "al-safa-2", name: "Al Safa 2", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A residential community with villas, offering good connectivity and proximity to Safa Park.", perSqftRate: "AED 1050", percentageGrowth: "5%" },
+                { id: "umm-suqeim-1", name: "Umm Suqeim 1", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "The oldest part of Umm Suqeim, known for its traditional villas and direct beach access.", perSqftRate: "AED 1300", percentageGrowth: "9%" },
+                { id: "al-safa", name: "Al Safa", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A well-established residential area with villas and apartments, known for Safa Park and its central location.", perSqftRate: "AED 1150", percentageGrowth: "6%" },
+                { id: "jumeirah-3", name: "Jumeirah 3", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A prime residential area with villas, offering beach access and a relaxed lifestyle.", perSqftRate: "AED 1400", percentageGrowth: "8%" },
+                { id: "safa-park", name: "Safa Park", developer: "Dubai Municipal Corporation", manager: "Dubai Municipal Corporation", famousFor: "A large urban park, popular for recreation, picnics, and its green spaces.", perSqftRate: "N/A (Park)", percentageGrowth: "N/A" },
+                { id: "sunset-mall", name: "Sunset Mall", developer: "Wasl Properties", manager: "Wasl Properties", famousFor: "A community mall in Jumeirah, offering retail, dining, and entertainment options.", perSqftRate: "N/A (Retail)", percentageGrowth: "N/A" },
+                { id: "the-world-island", name: "The World Island", developer: "Nakheel", manager: "Kleindienst Group (for The Heart of Europe)", famousFor: "An artificial archipelago of small islands constructed in the shape of a world map, with some islands developed into luxury resorts.", perSqftRate: "AED 4000", percentageGrowth: "25%" },
+                { id: "the-private-island-sweden", name: "The Private Island (Sweden Island)", developer: "The Kleindienst Group", manager: "The Kleindienst Group", famousFor: "Part of The Heart of Europe development on The World Islands, offering luxury villas with unique designs.", perSqftRate: "AED 4500", percentageGrowth: "30%" },
+                { id: "dubai-canal", name: "Dubai Canal", developer: "RTA (Roads and Transport Authority)", manager: "RTA", famousFor: "An artificial waterway extending from Business Bay to the Arabian Gulf, transforming parts of Dubai into a waterfront city.", perSqftRate: "N/A (Infrastructure)", percentageGrowth: "N/A" },
+                { id: "al-wasl", name: "Al Wasl", developer: "Wasl Properties", manager: "Wasl Properties", famousFor: "A residential area known for its villas, schools, and proximity to Jumeirah and Sheikh Zayed Road.", perSqftRate: "AED 1100", percentageGrowth: "6%" },
+                { id: "jumeirah-2", name: "Jumeirah 2", developer: "Wasl Properties", manager: "Wasl Properties", famousFor: "A residential area with villas, offering beach access and a mix of traditional and modern properties.", perSqftRate: "AED 1300", percentageGrowth: "8%" },
+                { id: "jumeirah-bay-islands", name: "Jumeirah Bay Islands", developer: "Meraas (now Dubai Holding)", manager: "Dubai Holding", famousFor: "A luxury island destination featuring Bulgari Resort & Residences and high-end properties.", perSqftRate: "AED 2800", percentageGrowth: "17%" },
+                { id: "bulgan-island", name: "Bulgari Island", developer: "Meraas (now Dubai Holding)", manager: "Dubai Holding", famousFor: "Home to the ultra-luxury Bulgari Resort & Residences, part of Jumeirah Bay Islands.", perSqftRate: "AED 3500", percentageGrowth: "22%" },
+                { id: "al-satwa", name: "Al Satwa", developer: "Wasl Properties (some parts by Dubai Municipality)", manager: "Wasl Properties / Dubai Municipality", famousFor: "A vibrant, multicultural residential and commercial area known for its diverse shops, tailors, and restaurants.", perSqftRate: "AED 900", percentageGrowth: "3%" },
+                { id: "al-badaa", name: "Al Bada'a", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A residential area located between Jumeirah and Al Satwa, offering a mix of villas and apartments.", perSqftRate: "AED 950", percentageGrowth: "4%" },
+                { id: "jumeirah-1", name: "Jumeirah 1", developer: "Wasl Properties", manager: "Wasl Properties", famousFor: "The original Jumeirah district, known for its traditional villas, beach access, and proximity to La Mer.", perSqftRate: "AED 1400", percentageGrowth: "9%" },
+                { id: "la-mer", name: "La Mer", developer: "Meraas (now Dubai Holding)", manager: "Dubai Holding", famousFor: "A popular beachfront destination with trendy restaurants, cafes, retail, and recreational facilities.", perSqftRate: "N/A (Leisure)", percentageGrowth: "N/A" },
+                { id: "al-jaffiliya", name: "Al Jaffiliya", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A residential and administrative area, home to the General Directorate of Residency and Foreigners Affairs (GDRFA).", perSqftRate: "AED 880", percentageGrowth: "2%" },
+                { id: "al-hudaiba", name: "Al Hudaiba", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A residential area located near Port Rashid and the coast, offering a mix of villas and apartments.", perSqftRate: "AED 920", percentageGrowth: "3%" },
+                { id: "al-mina", name: "Al Mina", developer: "DP World", manager: "DP World (Ports, Customs & Free Zone Corporation)", famousFor: "A significant port area in Dubai, crucial for maritime trade and logistics, part of the larger port operations.", perSqftRate: "N/A (Industrial)", percentageGrowth: "N/A" },
+                { id: "dubai-dry-docks", name: "Dubai Dry Docks", developer: "DP World", manager: "DP World", famousFor: "One of the largest ship repair yards in the Middle East, offering comprehensive maritime services.", perSqftRate: "N/A (Industrial)", percentageGrowth: "N/A" },
+                { id: "zabeel-park", name: "Zabeel Park", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A large public park in Dubai, known for its green spaces, jogging tracks, and the iconic Dubai Frame.", perSqftRate: "N/A (Park)", percentageGrowth: "N/A" },
+                { id: "umm-hurair-2", name: "Umm Hurair 2", developer: "Tatweer / Dubai Holding", manager: "Tatweer / Dubai Holding", famousFor: "A mixed-use area, home to Dubai Healthcare City and various residential and commercial developments.", perSqftRate: "AED 1000", percentageGrowth: "5%" },
+                { id: "mohammed-bin-rashid-university", name: "Mohammed Bin Rashid University of Medicine and Health Sciences (MBRU)", developer: "DHCA (Dubai Healthcare City Authority)", manager: "DHCA", famousFor: "A leading academic institution focusing on health sciences education and research.", perSqftRate: "N/A (Educational)", percentageGrowth: "N/A" },
+                { id: "sofitel-dubai", name: "Sofitel Dubai Downtown", developer: "Wafi Group (MKM Holding)", manager: "Wafi Group (MKM Holding)", famousFor: "A luxury hotel offering direct access to The Dubai Mall and stunning views of Burj Khalifa.", perSqftRate: "N/A (Hotel)", percentageGrowth: "N/A" },
+                { id: "wafi-mall", name: "Wafi Mall", developer: "Wafi Group (MKM Holding)", manager: "Wafi Group (MKM Holding)", famousFor: "A distinctive shopping mall with an Egyptian theme, known for its unique architecture and luxury boutiques.", perSqftRate: "N/A (Retail)", percentageGrowth: "N/A" },
+                { id: "oud-metha", name: "Oud Metha", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A well-established residential and commercial area known for its schools, hospitals, and a mix of apartments and villas.", perSqftRate: "AED 950", percentageGrowth: "4%" },
+                { id: "al-karama", name: "Al Karama", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A bustling residential and commercial district popular for its affordable housing, diverse dining options, and numerous shops.", perSqftRate: "AED 800", percentageGrowth: "2%" },
+                { id: "al-mankhool", name: "Al Mankhool", developer: "Dubai Municipality", manager: "Dubai Municipality / Individual property owners", famousFor: "A residential area in Bur Dubai, known for its apartments, hotels, and proximity to shopping malls and historical sites.", perSqftRate: "AED 850", percentageGrowth: "3%" },
+                { id: "bur-juman", name: "BurJuman", developer: "Al Ghurair Group", manager: "Al Ghurair Group", famousFor: "One of Dubai's oldest shopping malls, known for its luxury brands and family-friendly atmosphere.", perSqftRate: "N/A (Retail)", percentageGrowth: "N/A" },
+                { id: "al-raffa", name: "Al Raffa", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A residential and commercial area in Bur Dubai, known for its mix of apartments, shops, and restaurants.", perSqftRate: "AED 820", percentageGrowth: "2%" },
+                { id: "extension-of-al-mina", name: "Extension of Al Mina", developer: "DP World", manager: "DP World", famousFor: "An expansion of the Al Mina port area, enhancing its capabilities for cargo and logistics.", perSqftRate: "N/A (Industrial)", percentageGrowth: "N/A" },
+                { id: "dubai-customs", name: "Dubai Customs", developer: "Government of Dubai", manager: "Government of Dubai", famousFor: "The government authority responsible for customs operations, trade facilitation, and border security.", perSqftRate: "N/A (Government)", percentageGrowth: "N/A" },
+                { id: "port-rashid-passenger-terminal", name: "Port Rashid Passenger Terminal", developer: "DP World", manager: "DP World", famousFor: "A major cruise terminal serving international cruise lines and passengers visiting Dubai.", perSqftRate: "N/A (Tourism)", percentageGrowth: "N/A" },
+                { id: "port-rashid", name: "Port Rashid", developer: "Dubai Government (1970), later Nakheel with EMAAR & DP World", manager: "DP World", famousFor: "A historic commercial port now being redeveloped into a cruise tourism destination and waterfront community.", perSqftRate: "N/A (Mixed-use)", percentageGrowth: "N/A" },
+                { id: "dubai-maritime-city", name: "Dubai Maritime City", developer: "Dubai Maritime City LLC (a subsidiary of DP World)", manager: "Dubai Maritime City LLC", famousFor: "A purpose-built maritime hub designed to support the maritime industry, offering commercial and industrial facilities.", perSqftRate: "N/A (Industrial)", percentageGrowth: "N/A" },
+                { id: "deira", name: "Deira", developer: "Dubai Municipality", manager: "Dubai Municipality (some areas by Wasl Group)", famousFor: "The historic heart of Dubai, known for its traditional souks (gold, spice, perfume), Dhow Wharfage, and vibrant trading.", perSqftRate: "AED 750", percentageGrowth: "1%" },
+                { id: "dubai-islands", name: "Dubai Islands", developer: "Nakheel", manager: "Nakheel", famousFor: "A new waterfront masterplan by Nakheel, transforming the former Deira Islands into a prime residential and tourism destination.", perSqftRate: "AED 1800", percentageGrowth: "10%" },
+                { id: "al-qusais", name: "Al Qusais", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A large residential and industrial area, known for its affordable housing and proximity to Dubai International Airport.", perSqftRate: "AED 650", percentageGrowth: "1%" },
+                { id: "dubai-international-airport", name: "Dubai International Airport (DXB)", developer: "Dubai Airports", manager: "Dubai Airports", famousFor: "One of the world's busiest airports by international passenger traffic, a major global aviation hub.", perSqftRate: "N/A (Infrastructure)", percentageGrowth: "N/A" },
+                { id: "al-twar", name: "Al Twar", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A well-established residential area with villas, known for its quiet environment and family-friendly amenities.", perSqftRate: "AED 900", percentageGrowth: "3%" },
+                { id: "al-nahda", name: "Al Nahda", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A residential area bordering Sharjah, offering affordable housing options and good connectivity.", perSqftRate: "AED 700", percentageGrowth: "2%" },
+                { id: "towards-sharjah-e11", name: "Towards Sharjah", developer: "RTA", manager: "RTA", famousFor: "The continuation of E11 leading towards the emirate of Sharjah.", perSqftRate: "N/A", percentageGrowth: "N/A" }
             ],
             e311: [
-                { id: "jebel-ali-industrial-e311", name: "Jebel Ali Industrial", name: "Jebel Ali Industrial", developer: "Various developers", manager: "Various entities", famousFor: "Manufacturing & warehouse hub along E311." },
-                { id: "dip", name: "DIP (Dubai Investments Park)", developer: "Dubai Investments", manager: "Dubai Investments", famousFor: "A mixed-use development with industrial, commercial, and residential zones." },
-                { id: "dubai-production-city", name: "Dubai Production City (IMPZ)", developer: "TECOM Group", manager: "TECOM Group", famousFor: "A free zone dedicated to media production and printing industries." },
-                { id: "dubai-sports-city", name: "Dubai Sports City", developer: "Dubai Properties", manager: "Dubai Properties and community management.", famousFor: "A multi-venue sports complex with residential and commercial properties." },
-                { id: "jumeirah-village-circle-jvc", name: "Jumeirah Village Circle (JVC)", developer: "Nakheel Properties", manager: "Various property management companies and community associations.", famousFor: "A family-friendly master community known for its affordable villas, townhouses, and apartments." },
-                { id: "jumeirah-village-triangle-jvt", name: "Jumeirah Village Triangle (JVT)", developer: "Nakheel Properties", manager: "Various property management companies.", famousFor: "A residential community similar to JVC, offering villas and townhouses, known for its quiet environment." },
-                { id: "motor-city", name: "Motor City", developer: "Union Properties", manager: "Union Properties and community management.", famousFor: "A motorsport-themed development offering residential properties, business parks, and retail outlets." },
-                { id: "arabian-ranches", name: "Arabian Ranches", developer: "Emaar Properties", manager: "Emaar Properties and community management.", famousFor: "A prestigious desert-themed gated villa community, known for its golf course and equestrian facilities." },
-                { id: "dubai-silicon-oasis-e311", name: "Dubai Silicon Oasis", developer: "Dubai Silicon Oasis Authority (DSOA)", manager: "DSOA", famousFor: "A free zone technology park with residential and commercial properties, fostering innovation and technology." },
-                { id: "academic-city-e311", name: "Academic City", developer: "TECOM Group", manager: "TECOM Group", famousFor: "A large educational hub hosting numerous universities and colleges." },
-                { id: "mirdif", name: "Mirdif", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A popular residential area known for its family-friendly environment, villas, and Mirdif City Centre." },
-                { id: "al-warqaa", name: "Al Warqaa", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A residential suburb with large villas and a focus on community living." },
-                { id: "muhaisnah", name: "Muhaisnah", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A mixed-use area near the Sharjah border, with residential and labor accommodation." },
-                { id: "al-qusais-industrial-e311", name: "Al Qusais Industrial", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "Industrial estates and workshops area." },
-                { id: "towards-sharjah-e311", name: "Towards Sharjah", developer: "RTA", manager: "RTA", famousFor: "The continuation of E311 leading towards the emirate of Sharjah." }
+                { id: "jebel-ali-industrial-e311", name: "Jebel Ali Industrial", name: "Jebel Ali Industrial", developer: "Various developers", manager: "Various entities", famousFor: "Manufacturing & warehouse hub along E311.", perSqftRate: "AED 500", percentageGrowth: "2%" },
+                { id: "dip", name: "DIP (Dubai Investments Park)", developer: "Dubai Investments", manager: "Dubai Investments", famousFor: "A mixed-use development with industrial, commercial, and residential zones.", perSqftRate: "AED 750", percentageGrowth: "4%" },
+                { id: "dubai-production-city", name: "Dubai Production City (IMPZ)", developer: "TECOM Group", manager: "TECOM Group", famousFor: "A free zone dedicated to media production and printing industries.", perSqftRate: "AED 800", percentageGrowth: "3%" },
+                { id: "dubai-sports-city", name: "Dubai Sports City", developer: "Dubai Properties", manager: "Dubai Properties and community management.", famousFor: "A multi-venue sports complex with residential and commercial properties.", perSqftRate: "AED 950", percentageGrowth: "6%" },
+                { id: "jumeirah-village-circle-jvc", name: "Jumeirah Village Circle (JVC)", developer: "Nakheel Properties", manager: "Various property management companies and community associations.", famousFor: "A family-friendly master community known for its affordable villas, townhouses, and apartments.", perSqftRate: "AED 900", percentageGrowth: "7%" },
+                { id: "jumeirah-village-triangle-jvt", name: "Jumeirah Village Triangle (JVT)", developer: "Nakheel Properties", manager: "Various property management companies.", famousFor: "A residential community similar to JVC, offering villas and townhouses, known for its quiet environment.", perSqftRate: "AED 920", percentageGrowth: "6%" },
+                { id: "motor-city", name: "Motor City", developer: "Union Properties", manager: "Union Properties and community management.", famousFor: "A motorsport-themed development offering residential properties, business parks, and retail outlets.", perSqftRate: "AED 1000", percentageGrowth: "5%" },
+                { id: "arabian-ranches", name: "Arabian Ranches", developer: "Emaar Properties", manager: "Emaar Properties and community management.", famousFor: "A prestigious desert-themed gated villa community, known for its golf course and equestrian facilities.", perSqftRate: "AED 1200", percentageGrowth: "8%" },
+                { id: "dubai-silicon-oasis-e311", name: "Dubai Silicon Oasis", developer: "Dubai Silicon Oasis Authority (DSOA)", manager: "DSOA", famousFor: "A free zone technology park with residential and commercial properties, fostering innovation and technology.", perSqftRate: "AED 850", percentageGrowth: "4%" },
+                { id: "academic-city-e311", name: "Academic City", developer: "TECOM Group", manager: "TECOM Group", famousFor: "A large educational hub hosting numerous universities and colleges.", perSqftRate: "N/A (Educational)", percentageGrowth: "N/A" },
+                { id: "mirdif", name: "Mirdif", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A popular residential area known for its family-friendly environment, villas, and Mirdif City Centre.", perSqftRate: "AED 980", percentageGrowth: "3%" },
+                { id: "al-warqaa", name: "Al Warqaa", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A residential suburb with large villas and a focus on community living.", perSqftRate: "AED 870", percentageGrowth: "2%" },
+                { id: "muhaisnah", name: "Muhaisnah", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "A mixed-use area near the Sharjah border, with residential and labor accommodation.", perSqftRate: "AED 600", percentageGrowth: "1%" },
+                { id: "al-qusais-industrial-e311", name: "Al Qusais Industrial", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "Industrial estates and workshops area.", perSqftRate: "AED 550", percentageGrowth: "0.5%" },
+                { id: "towards-sharjah-e311", name: "Towards Sharjah", developer: "RTA", manager: "RTA", famousFor: "The continuation of E311 leading towards the emirate of Sharjah.", perSqftRate: "N/A", percentageGrowth: "N/A" }
             ],
             e611: [
-                { id: "jebel-ali-e611", name: "Jebel Ali", developer: "DP World", manager: "DP World", famousFor: "Logistics, industrial & port access point from E611." },
-                { id: "dubai-industrial-city", name: "Dubai Industrial City", developer: "Dubai Holding", manager: "Dubai Holding", famousFor: "A large manufacturing and logistics hub, home to various industrial sectors." },
-                { id: "dubai-south", name: "Dubai South", developer: "Dubai Aviation City Corporation", manager: "Dubai Aviation City Corporation", famousFor: "A master-planned city encompassing Al Maktoum International Airport and the Expo 2020 site." },
-                { id: "al-maktoum-international-airport", name: "Al Maktoum International Airport (DWC)", developer: "Dubai Aviation City Corporation", manager: "Dubai Aviation City Corporation", famousFor: "Dubai's second international airport, a key component of Dubai South's logistics and aviation hub." },
-                { id: "dubai-logistics-city", name: "Dubai Logistics City", developer: "Dubai Aviation City Corporation", manager: "Dubai Aviation City Corporation", famousFor: "A free zone dedicated to logistics, freight, and supply chain management within Dubai South." },
-                { id: "expo-city-dubai", name: "Expo City Dubai", developer: "Dubai Government", manager: "Expo City Dubai Authority", famousFor: "The legacy site of Expo 2020 Dubai, now a futuristic, sustainable city with business, residential, and attractions." },
-                { id: "dubailand", name: "Dubailand", developer: "Dubai Properties", manager: "Dubai Properties and various developers.", famousFor: "A massive entertainment and residential development, home to various theme parks and communities." },
-                { id: "the-villa", name: "The Villa", developer: "Dubai Properties", manager: "Dubai Properties and community management.", famousFor: "An upscale Spanish-style villa community within Dubailand." },
-                { id: "falcon-city", name: "Falcon City of Wonders", developer: "Falconcity of Wonders LLC", manager: "Falconcity of Wonders LLC", famousFor: "A unique residential project featuring replicas of world-famous monuments." },
-                { id: "al-barari", name: "Al Barari", developer: "Sustainable City Development", manager: "Sustainable City Development", famousFor: "A luxurious eco-friendly residential community known for its lush green spaces and tranquil environment." },
-                { id: "al-aweer", name: "Al Aweer", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "Known for its central fruit and vegetable market, and a mix of residential and agricultural areas." },
-                { id: "ras-al-khor", name: "Ras Al Khor", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "Home to the Ras Al Khor Wildlife Sanctuary (flamingos) and an industrial area." },
-                { id: "international-city", name: "International City", developer: "Nakheel Properties", manager: "Nakheel Properties", famousFor: "An affordable residential development with country-themed clusters and Dragon Mart." },
-                { id: "dragon-mart", name: "Dragon Mart", developer: "Nakheel Properties", manager: "Nakheel Properties", famousFor: "The largest trading hub for Chinese products outside mainland China." },
-                { id: "silicon-oasis-e611", name: "Silicon Oasis", developer: "Dubai Silicon Oasis Authority (DSOA)", manager: "DSOA", famousFor: "A free zone technology park with residential and commercial properties, fostering innovation and technology." },
-                { id: "academic-city-e611", name: "Academic City", developer: "TECOM Group", manager: "TECOM Group", famousFor: "A large educational hub hosting numerous universities and colleges." },
-                { id: "warsan", name: "Warsan", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "An emerging residential area, home to the Warsan wastewater treatment plant and various developments." },
-                { id: "towards-sharjah-e611", name: "Towards Sharjah", developer: "RTA", manager: "RTA", famousFor: "The continuation of E611 leading towards the emirate of Sharjah." }
+                { id: "jebel-ali-e611", name: "Jebel Ali", developer: "DP World", manager: "DP World", famousFor: "Logistics, industrial & port access point from E611.", perSqftRate: "AED 520", percentageGrowth: "1%" },
+                { id: "dubai-industrial-city", name: "Dubai Industrial City", developer: "Dubai Holding", manager: "Dubai Holding", famousFor: "A large manufacturing and logistics hub, home to various industrial sectors.", perSqftRate: "AED 600", percentageGrowth: "3%" },
+                { id: "dubai-south", name: "Dubai South", developer: "Dubai Aviation City Corporation", manager: "Dubai Aviation City Corporation", famousFor: "A master-planned city encompassing Al Maktoum International Airport and the Expo 2020 site.", perSqftRate: "AED 850", percentageGrowth: "9%" },
+                { id: "al-maktoum-international-airport", name: "Al Maktoum International Airport (DWC)", developer: "Dubai Aviation City Corporation", manager: "Dubai Aviation City Corporation", famousFor: "Dubai's second international airport, a key component of Dubai South's logistics and aviation hub.", perSqftRate: "N/A (Infrastructure)", percentageGrowth: "N/A" },
+                { id: "dubai-logistics-city", name: "Dubai Logistics City", developer: "Dubai Aviation City Corporation", manager: "Dubai Aviation City Corporation", famousFor: "A free zone dedicated to logistics, freight, and supply chain management within Dubai South.", perSqftRate: "N/A (Logistics)", percentageGrowth: "N/A" },
+                { id: "expo-city-dubai", name: "Expo City Dubai", developer: "Dubai Government", manager: "Expo City Dubai Authority", famousFor: "The legacy site of Expo 2020 Dubai, now a futuristic, sustainable city with business, residential, and attractions.", perSqftRate: "AED 1100", percentageGrowth: "10%" },
+                { id: "dubailand", name: "Dubailand", developer: "Dubai Properties", manager: "Dubai Properties and various developers.", famousFor: "A massive entertainment and residential development, home to various theme parks and communities.", perSqftRate: "AED 900", percentageGrowth: "6%" },
+                { id: "the-villa", name: "The Villa", developer: "Dubai Properties", manager: "Dubai Properties and community management.", famousFor: "An upscale Spanish-style villa community within Dubailand.", perSqftRate: "AED 1050", percentageGrowth: "7%" },
+                { id: "falcon-city", name: "Falcon City of Wonders", developer: "Falconcity of Wonders LLC", manager: "Falconcity of Wonders LLC", famousFor: "A unique residential project featuring replicas of world-famous monuments.", perSqftRate: "AED 980", percentageGrowth: "5%" },
+                { id: "al-barari", name: "Al Barari", developer: "Sustainable City Development", manager: "Sustainable City Development", famousFor: "A luxurious eco-friendly residential community known for its lush green spaces and tranquil environment.", perSqftRate: "AED 1500", percentageGrowth: "12%" },
+                { id: "al-aweer", name: "Al Aweer", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "Known for its central fruit and vegetable market, and a mix of residential and agricultural areas.", perSqftRate: "AED 650", percentageGrowth: "2%" },
+                { id: "ras-al-khor", name: "Ras Al Khor", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "Home to the Ras Al Khor Wildlife Sanctuary (flamingos) and an industrial area.", perSqftRate: "AED 700", percentageGrowth: "3%" },
+                { id: "international-city", name: "International City", developer: "Nakheel Properties", manager: "Nakheel Properties", famousFor: "An affordable residential development with country-themed clusters and Dragon Mart.", perSqftRate: "AED 600", percentageGrowth: "4%" },
+                { id: "dragon-mart", name: "Dragon Mart", developer: "Nakheel Properties", manager: "Nakheel Properties", famousFor: "The largest trading hub for Chinese products outside mainland China.", perSqftRate: "N/A (Retail)", percentageGrowth: "N/A" },
+                { id: "silicon-oasis-e611", name: "Silicon Oasis", developer: "Dubai Silicon Oasis Authority (DSOA)", manager: "DSOA", famousFor: "A free zone technology park with residential and commercial properties, fostering innovation and technology.", perSqftRate: "AED 850", percentageGrowth: "5%" },
+                { id: "academic-city-e611", name: "Academic City", developer: "TECOM Group", manager: "TECOM Group", famousFor: "A large educational hub hosting numerous universities and colleges.", perSqftRate: "N/A (Educational)", percentageGrowth: "N/A" },
+                { id: "warsan", name: "Warsan", developer: "Dubai Municipality", manager: "Dubai Municipality", famousFor: "An emerging residential area, home to the Warsan wastewater treatment plant and various developments.", perSqftRate: "AED 720", percentageGrowth: "3%" },
+                { id: "towards-sharjah-e611", name: "Towards Sharjah", developer: "RTA", manager: "RTA", famousFor: "The continuation of E611 leading towards the emirate of Sharjah.", perSqftRate: "N/A", percentageGrowth: "N/A" }
             ]
         };
 
@@ -1153,12 +1270,15 @@
                 currentPageId = pageId;
                 if (pageId === 'home-page') randomDidYouKnow(); // Refresh "Did you know?" on home page
                 if (pageId !== 'highways-page') {
+                    // Corrected: Ensure the closing brace for forEach is present
                     document.querySelectorAll('.locations.is-visible').forEach(openLocations => {
-                        if (openLocations.id !== locationsContainer.id) {
+                        // Check if locationsContainer is defined before accessing its id
+                        const locationsContainer = document.getElementById(`${openLocations.id.replace('-locations', '')}-locations`);
+                        if (locationsContainer && openLocations.id !== locationsContainer.id) {
                             openLocations.classList.remove('is-visible');
                             openLocations.innerHTML = '';
                         }
-                    }); // Corrected: closing brace for the if statement
+                    });
                 }
             }
             closePanel(); // Close info panel when changing pages
@@ -1203,10 +1323,12 @@
                 <p>${location.manager}</p>
                 <div class="info-icons"><span>🌟</span> <b>Why It's Famous:</b></div>
                 <p>${location.famousFor}</p>
+                ${location.perSqftRate ? `<div class="info-icons"><span>💰</span> <b>Avg. Price Per Sq. Ft.:</b></div><p>${location.perSqftRate}</p>` : ''}
+                ${location.percentageGrowth ? `<div class="info-icons"><span>📈</span> <b>Avg. Annual Growth:</b></div><p>${location.percentageGrowth}</p>` : ''}
                 <button class="generate-insights-btn" onclick="getInvestmentInsights(${JSON.stringify(location).replace(/"/g, '&quot;')})">✨ Get Investment Insights</button>
                 <div id="ai-insights-output" class="ai-insights-section" style="display:none;">
                     <h3>AI Investment Insights:</h3>
-                    <p id="ai-insights-text"></p>
+                    <div id="ai-insights-text"></div>
                 </div>
             `;
 
@@ -1216,24 +1338,55 @@
 
         async function getInvestmentInsights(location) {
             const insightsOutputDiv = document.getElementById('ai-insights-output');
-            const insightsTextP = document.getElementById('ai-insights-text');
+            const insightsTextDiv = document.getElementById('ai-insights-text'); // Changed to Div
             const generateButton = document.querySelector('.generate-insights-btn');
 
             insightsOutputDiv.style.display = 'block';
-            insightsTextP.innerHTML = '<span class="loading-message">Generating insights...</span>';
+            insightsTextDiv.innerHTML = '<span class="loading-message">Generating insights...</span>';
             generateButton.disabled = true; // Disable button during generation
 
-            const prompt = `Based on the following information about a Dubai location, provide a concise summary of its real estate investment potential, highlighting key aspects that would attract investors or residents. Focus on its famous features, developer, and manager.
-Location: ${location.name}
-Developer: ${location.developer}
-Manager: ${location.manager}
-Famous For: ${location.famousFor}
-Keep the response to 3-4 sentences.`;
+            const prompt = `Based on the following information about the Dubai location "${location.name}", provide concise real estate investment insights.
+Provide the response as a JSON object with two properties: "whyToInvest" and "whatYouGet".
+Each property should be an array of strings, where each string is a single, short sentence.
+Include 2-3 brief reasons for "whyToInvest" and 2-3 brief benefits for "whatYouGet".
+
+Location Details:
+-   Name: ${location.name}
+-   Developer: ${location.developer}
+-   Manager: ${location.manager}
+-   Famous For: ${location.famousFor}
+-   Average Price Per Sq. Ft.: ${location.perSqftRate}
+-   Average Annual Growth: ${location.percentageGrowth}
+
+Example JSON format:
+{
+  "whyToInvest": ["Reason 1.", "Reason 2."],
+  "whatYouGet": ["Benefit 1.", "Benefit 2."]
+}`;
 
             let chatHistory = [];
             chatHistory.push({ role: "user", parts: [{ text: prompt }] });
 
-            const payload = { contents: chatHistory };
+            const payload = {
+                contents: chatHistory,
+                generationConfig: {
+                    responseMimeType: "application/json",
+                    responseSchema: {
+                        type: "OBJECT",
+                        properties: {
+                            whyToInvest: {
+                                type: "ARRAY",
+                                items: { type: "STRING" }
+                            },
+                            whatYouGet: {
+                                type: "ARRAY",
+                                items: { type: "STRING" }
+                            }
+                        },
+                        required: ["whyToInvest", "whatYouGet"]
+                    }
+                }
+            };
             const apiKey = ""; // Canvas will provide this API key at runtime
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
@@ -1244,22 +1397,165 @@ Keep the response to 3-4 sentences.`;
                     body: JSON.stringify(payload)
                 });
 
+                if (!response.ok) {
+                    const errorBody = await response.text();
+                    console.error(`HTTP error! status: ${response.status}, body: ${errorBody}`);
+                    insightsTextDiv.textContent = `Failed to get insights: Server error (${response.status}). Please try again.`;
+                    return;
+                }
+
                 const result = await response.json();
+                console.log("Gemini API raw result:", result);
 
                 if (result.candidates && result.candidates.length > 0 &&
                     result.candidates[0].content && result.candidates[0].content.parts &&
                     result.candidates[0].content.parts.length > 0) {
-                    const text = result.candidates[0].content.parts[0].text;
-                    insightsTextP.textContent = text;
+                    const jsonString = result.candidates[0].content.parts[0].text;
+                    let parsedJson;
+                    try {
+                        parsedJson = JSON.parse(jsonString);
+                    } catch (parseError) {
+                        console.error("Failed to parse JSON from AI response:", parseError, "Raw text:", jsonString);
+                        insightsTextDiv.textContent = "Could not parse insights. AI response was not valid JSON.";
+                        return;
+                    }
+
+                    let htmlOutput = '';
+                    if (parsedJson.whyToInvest && parsedJson.whyToInvest.length > 0) {
+                        htmlOutput += '<h4>Why to Invest Here:</h4><ul>';
+                        parsedJson.whyToInvest.forEach(item => {
+                            htmlOutput += `<li>${item}</li>`;
+                        });
+                        htmlOutput += '</ul>';
+                    }
+                    if (parsedJson.whatYouGet && parsedJson.whatYouGet.length > 0) {
+                        htmlOutput += '<h4>What You\'ll Get as a Customer/Resident:</h4><ul>';
+                        parsedJson.whatYouGet.forEach(item => {
+                            htmlOutput += `<li>${item}</li>`;
+                        });
+                        htmlOutput += '</ul>';
+                    }
+
+                    if (htmlOutput === '') {
+                        insightsTextDiv.textContent = "No specific insights were generated for this location.";
+                    } else {
+                        insightsTextDiv.innerHTML = htmlOutput;
+                    }
+
                 } else {
-                    insightsTextP.textContent = "Could not generate insights. Please try again.";
-                    console.error("Gemini API response structure unexpected:", result);
+                    insightsTextDiv.textContent = "Could not generate insights. The AI response was empty or malformed.";
+                    console.error("Gemini API response structure unexpected or empty content:", result);
                 }
             } catch (error) {
-                insightsTextP.textContent = "Error generating insights. Please check your connection or try again later.";
+                insightsTextDiv.textContent = "Error generating insights. Please check your connection or try again later.";
                 console.error("Error calling Gemini API:", error);
             } finally {
                 generateButton.disabled = false; // Re-enable the button
+            }
+        }
+
+        async function searchDubaiInfo() {
+            const searchInput = document.getElementById('ai-search-input');
+            const searchResultsDiv = document.getElementById('ai-home-search-results');
+            const query = searchInput.value.trim();
+
+            if (!query) {
+                searchResultsDiv.innerHTML = '<p style="color: #e74c3c;">Please enter a search query.</p>';
+                return;
+            }
+
+            searchResultsDiv.innerHTML = '<p class="loading-message">Searching UAE information...</p>';
+            searchInput.disabled = true; // Disable input during search
+
+            // Updated prompt to search for UAE-wide information
+            const prompt = `Provide information about "${query}" specifically related to the United Arab Emirates (UAE).
+If the query is not directly related to the UAE, provide a concise message stating that you can only provide information about the UAE.
+If relevant information is found, provide it as a list of concise sentences.
+The response MUST be a JSON object with either an "info" property (an array of strings for the list items) or a "message" property (a string for the non-UAE related response).
+Example for relevant info: {"info": ["Fact 1.", "Fact 2."]}
+Example for non-UAE query: {"message": "I can only provide information about the UAE."}
+Example for no info found: {"info": []}`; // Explicitly an empty array
+
+            let chatHistory = [];
+            chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+
+            const payload = {
+                contents: chatHistory,
+                generationConfig: {
+                    responseMimeType: "application/json",
+                    responseSchema: {
+                        type: "OBJECT",
+                        properties: {
+                            info: {
+                                type: "ARRAY",
+                                items: { type: "STRING" }
+                            },
+                            message: { // For cases where the query is not UAE-related
+                                type: "STRING"
+                            }
+                        }
+                    }
+                }
+            };
+            const apiKey = ""; // Canvas will provide this API key at runtime
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorBody = await response.text();
+                    console.error(`HTTP error! status: ${response.status}, body: ${errorBody}`);
+                    searchResultsDiv.innerHTML = `<p style="color: #e74c3c;">Failed to get search results: Server error (${response.status}). Please try again.</p>`;
+                    return;
+                }
+
+                const result = await response.json();
+                console.log("AI Search API raw result:", result); // Log raw result
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const jsonString = result.candidates[0].content.parts[0].text;
+                    console.log("Raw JSON string from AI:", jsonString); // Log raw JSON string
+
+                    let parsedJson;
+                    try {
+                        parsedJson = JSON.parse(jsonString);
+                        console.log("Parsed JSON from AI:", parsedJson); // Log parsed JSON object
+                    } catch (parseError) {
+                        console.error("Failed to parse JSON from AI search response:", parseError, "Raw text:", jsonString);
+                        searchResultsDiv.innerHTML = '<p style="color: #e74c3c;">Could not parse search results. AI response was not valid JSON.</p>';
+                        return;
+                    }
+
+                    if (parsedJson.message) {
+                        searchResultsDiv.innerHTML = `<p>${parsedJson.message}</p>`;
+                    } else if (parsedJson.info && Array.isArray(parsedJson.info) && parsedJson.info.length > 0) {
+                        let htmlOutput = '<ul>';
+                        parsedJson.info.forEach(item => {
+                            htmlOutput += `<li>${item}</li>`;
+                        });
+                        htmlOutput += '</ul>';
+                        searchResultsDiv.innerHTML = htmlOutput;
+                    } else {
+                        // This covers cases where info is an empty array or missing, and message is also missing.
+                        searchResultsDiv.innerHTML = '<p>No specific information found for your query related to the UAE.</p>';
+                    }
+
+                } else {
+                    searchResultsDiv.innerHTML = '<p style="color: #e74c3c;">Could not get search results. The AI response was empty or malformed.</p>';
+                    console.error("AI Search API response structure unexpected or empty content:", result);
+                }
+            } catch (error) {
+                searchResultsDiv.innerHTML = '<p style="color: #e74c3c;">Error searching UAE information. Please check your connection or try again later.</p>';
+                console.error("Error calling AI Search API:", error);
+            } finally {
+                searchInput.disabled = false; // Re-enable input
             }
         }
 
@@ -1288,7 +1584,8 @@ Keep the response to 3-4 sentences.`;
                 !clickedElement.classList.contains('close') &&
                 !clickedElement.closest('.road') &&
                 !clickedElement.classList.contains('nav-button') &&
-                !clickedElement.classList.contains('generate-insights-btn')) { // Exclude insights button
+                !clickedElement.classList.contains('generate-insights-btn') &&
+                !clickedElement.closest('.ai-home-search-section')) { // Exclude AI search section
                 closePanel();
             }
         });
@@ -1301,11 +1598,13 @@ Keep the response to 3-4 sentences.`;
                 const roadKey = roadId.replace('-road-section', '');
                 const locationsContainer = document.getElementById(`${roadKey}-locations`);
                 document.querySelectorAll('.locations.is-visible').forEach(openLocations => {
-                    if (openLocations.id !== locationsContainer.id) {
+                    // Check if locationsContainer is defined before accessing its id
+                    const currentOpenRoadKey = openLocations.id.replace('-locations', '');
+                    if (currentOpenRoadKey !== roadKey) { // Only close if it's a different road section
                         openLocations.classList.remove('is-visible');
                         openLocations.innerHTML = '';
-                    }
-                }); // Corrected: closing brace for the if statement
+                        }
+                    });
                 if (locationsContainer.classList.contains('is-visible')) {
                     locationsContainer.classList.remove('is-visible');
                     locationsContainer.innerHTML = '';
