@@ -1,28 +1,273 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dubai Map</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Real Estate Agent Prospect Manager</title>
+  <style>
+    :root {
+      --primary: #5271ff;
+      --secondary: #f7f8fa;
+      --accent: #e6e9f1;
+      --success: #0BC15C;
+      --error: #ff5271;
+      --card-shadow: 0 2px 12px 0 rgba(34, 35, 58, 0.15);
+    }
+    body {
+      background: var(--secondary);
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0; padding: 0;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 600px;
+      background: #fff;
+      margin: 48px auto 24px;
+      border-radius: 16px;
+      box-shadow: var(--card-shadow);
+      padding: 32px 24px 24px 24px;
+    }
+    h2,h3 {
+      text-align: center;
+      color: var(--primary);
+      letter-spacing: 1px;
+      margin-top: 0;
+    }
+    form {
+      margin-bottom: 2em;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      margin-bottom: 17px;
+    }
+    label {
+      font-weight: 500;
+      color: #222;
+    }
+    input, select, textarea {
+      font-size: 16px;
+      padding: 10px;
+      border: 1px solid var(--accent);
+      border-radius: 5px;
+      outline: none;
+      margin-top: 4px;
+      background: var(--secondary);
+      transition: border 0.2s;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--primary);
+    }
+    textarea { resize: vertical; min-height: 50px; }
+    button {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      font-weight: 600;
+      letter-spacing: .5px;
+      font-size: 17px;
+      padding: 12px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #4271ff18;
+      transition: background .18s;
+      margin-top: 4px;
+    }
+    button:hover {
+      background: #3453c2;
+    }
+    .notification {
+      display: none;
+      background: var(--success);
+      color: #fff;
+      text-align: center;
+      padding: 10px 0;
+      border-radius: 8px;
+      margin-bottom: 18px;
+      font-weight: 600;
+      letter-spacing: .7px;
+    }
+    table {
+      margin-top: 14px;
+      width: 100%;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--card-shadow);
+      background: #fff;
+    }
+    th, td {
+      padding: 10px 6px;
+      font-size: 15px;
+      text-align: center;
+    }
+    th {
+      background: var(--primary);
+      color: #fff;
+      font-weight: 500;
+      border: none;
+    }
+    tbody tr:nth-child(even) {
+      background: var(--secondary);
+    }
+    .reminder {
+      color: var(--error);
+      font-weight: bold;
+    }
+    .delete-btn {
+      background: var(--error);
+      color: #fff;
+      border: none;
+      padding: 5px 13px;
+      border-radius: 5px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background .14s;
+    }
+    .delete-btn:hover {
+      background: #f21240;
+    }
+    @media (max-width: 700px) {
+      .container {
+        max-width: 97vw;
+        padding: 16px 6px 14px 6px;
+      }
+      table, th, td {
+        font-size: 13px;
+      }
+      button, input, select, textarea {
+        font-size: 15px;
+        padding: 9px;
+      }
+    }
+    @media (max-width: 480px) {
+      th, td { padding: 6px 2px; }
+      table { font-size: 13px;}
+    }
+  </style>
 </head>
 <body>
-  <h1>Dubai Map</h1>
   <div class="container">
-    <div class="map-container">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Flag_map_of_Dubai.png/800px-Flag_map_of_Dubai.png" 
-     alt="Dubai Map" usemap="#dubaiMap">
-      <map name="dubaiMap">
-        <area shape="rect" coords="100,220,180,260" alt="E11" onclick="showDetails('E11')">
-        <area shape="rect" coords="250,350,330,390" alt="E311" onclick="showDetails('E311')">
-        <area shape="rect" coords="150,600,230,640" alt="E611" onclick="showDetails('E611')">
-      </map>
-    </div>
-    <div class="info-box" id="infoBox">
-      <h2>Click on a road</h2>
-      <p>Details will appear here</p>
-    </div>
+    <h2>Real Estate Prospect Manager</h2>
+    <div class="notification" id="notification"></div>
+    <form id="prospectForm" autocomplete="off">
+      <div class="form-group">
+        <label for="name">Name*</label>
+        <input type="text" id="name" maxlength="40" required />
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone*</label>
+        <input type="tel" id="phone" maxlength="15" pattern="[0-9+\- ]+" required />
+      </div>
+      <div class="form-group">
+        <label for="budget">Budget</label>
+        <input type="text" id="budget" maxlength="20" />
+      </div>
+      <div class="form-group">
+        <label for="location">Location</label>
+        <input type="text" id="location" maxlength="30"/>
+      </div>
+      <div class="form-group">
+        <label for="developer">Developer</label>
+        <input type="text" id="developer" maxlength="30"/>
+      </div>
+      <div class="form-group">
+        <label for="type">Type</label>
+        <select id="type">
+          <option value="Investor">Investor</option>
+          <option value="End User">End User</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="comment">Additional Comments</label>
+        <textarea id="comment" maxlength="100"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="reminder">Set Reminder</label>
+        <input type="datetime-local" id="reminder" />
+      </div>
+      <button type="submit">Add Prospect</button>
+    </form>
+
+    <h3>Prospects</h3>
+    <table id="prospectTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>Budget</th>
+          <th>Location</th>
+          <th>Developer</th>
+          <th>Type</th>
+          <th>Comment</th>
+          <th>Reminder</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
   </div>
-  <script src="script.js"></script>
+  <script>
+    const form = document.getElementById('prospectForm');
+    const tableBody = document.querySelector('#prospectTable tbody');
+    const notification = document.getElementById('notification');
+
+    // Show a brief notification
+    function showNotification(msg, success = true) {
+      notification.textContent = msg;
+      notification.style.background = success ? 'var(--success)' : 'var(--error)';
+      notification.style.display = 'block';
+      setTimeout(() => { notification.style.display = 'none'; }, 2100);
+    }
+
+    // Add a new prospect to the table
+    form.onsubmit = function(e) {
+      e.preventDefault();
+      const data = [
+        form.name.value.trim(),
+        form.phone.value.trim(),
+        form.budget.value.trim(),
+        form.location.value.trim(),
+        form.developer.value.trim(),
+        form.type.value,
+        form.comment.value.trim(),
+        form.reminder.value
+      ];
+
+      // Basic input check
+      if(!data[0] || !data[1]) {
+        showNotification("Name and phone are required!", false);
+        return;
+      }
+
+      const row = document.createElement('tr');
+      data.forEach((val, idx) => {
+        const cell = document.createElement('td');
+        if(idx === 7 && val) { // reminder column
+          const date = new Date(val.replace('T', ' '));
+          cell.className = 'reminder';
+          cell.textContent = !isNaN(date) ?
+            `${date.toLocaleDateString()} ${date.toLocaleTimeString().slice(0, 5)}` : val;
+        } else {
+          cell.textContent = val;
+        }
+        row.appendChild(cell);
+      });
+      // Delete button
+      const delCell = document.createElement('td');
+      const btn = document.createElement('button');
+      btn.textContent = "Delete";
+      btn.className = "delete-btn";
+      btn.onclick = function() {
+        tableBody.removeChild(row);
+      };
+      delCell.appendChild(btn);
+      row.appendChild(delCell);
+
+      tableBody.appendChild(row);
+      form.reset();
+      showNotification("Prospect added!");
+    };
+  </script>
 </body>
 </html>
